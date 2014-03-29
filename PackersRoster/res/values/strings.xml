@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Packers Roster</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="roster_label">Roster</string>
+    <string name="refresh_roster">Refresh</string>
+    <string name="delete_roster">Delete</string>
+    <string name="help_text">No data currently on the device.  Click on refresh in the menu.</string>
+	<string name="details_btn">Get details</string>
+</resources>
