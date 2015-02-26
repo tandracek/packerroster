@@ -11,5 +11,44 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/delete_roster"/>
+        
+    <item android:id="@+id/group_sort"
+    	   android:title="@string/menu_sort">
+    	   <menu>
+    	<item android:id="@+id/menu_number"
+              android:title="@string/menu_number" />
+        <item android:id="@+id/menu_name"
+              android:title="@string/menu_name" />
+              </menu>
+    </item>
+        
+    <item android:id="@+id/group_position"
+    	   android:title="@string/menu_position">
+    	   <menu>
+    	<item android:id="@+id/menu_all"
+              android:title="@string/menu_all" />
+        <item android:id="@+id/menu_qb"
+              android:title="@string/menu_qb" />
+        <item android:id="@+id/menu_rb"
+              android:title="@string/menu_rb" />
+        <item android:id="@+id/menu_wr"
+              android:title="@string/menu_wr" />
+        <item android:id="@+id/menu_te"
+              android:title="@string/menu_te" />
+        <item android:id="@+id/menu_ol"
+              android:title="@string/menu_ol" />
+        <item android:id="@+id/menu_dl"
+              android:title="@string/menu_dl" />
+        <item android:id="@+id/menu_lb"
+              android:title="@string/menu_lb" />
+        <item android:id="@+id/menu_cb"
+              android:title="@string/menu_cb" />
+        <item android:id="@+id/menu_s"
+              android:title="@string/menu_s" />
+        <item android:id="@+id/menu_sp"
+              android:title="@string/menu_sp" />
+              </menu>
+    </item>
+    
 
 </menu>

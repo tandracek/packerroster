@@ -1,6 +1,7 @@
 package com.example.packersroster;
 
-public class Player {
+public class Player implements Comparable<Player>{
+	public static String sortBy;
 	public int id = 0;
 	
 	public String sortedValue;
@@ -14,6 +15,7 @@ public class Player {
 	public String age;
 	public String ht_wt;
 	public String college;
+	public String group;
 	
 	public DraftInfo draftInfo;
 	
@@ -92,10 +94,31 @@ public class Player {
 	}
 	
 	public int getNumAsInt() {
-		return Integer.parseInt(number);
+		int c_number;
+		try {
+			c_number = Integer.parseInt(number);
+		} catch(NumberFormatException e) {
+			return 0;
+		}
+		return c_number;
 	}
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+	@Override
+	public int compareTo(Player arg0) {
+		if(Player.sortBy == null) Player.sortBy = "name";
+		
+		if(sortBy.equals("number")) {
+			int comp = arg0.getNumAsInt();
+			int curr = this.getNumAsInt();
+			if(comp > curr) return -1;
+			if(comp < curr) return 1;
+			else return 0;
+		} else {
+			return this.name.compareTo(arg0.name);
+		}
 	}
 }

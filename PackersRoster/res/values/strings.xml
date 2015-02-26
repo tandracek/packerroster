@@ -9,4 +9,19 @@
     <string name="delete_roster">Delete</string>
     <string name="help_text">No data currently on the device.  Click on refresh in the menu.</string>
 	<string name="details_btn">Get details</string>
+	<string name="menu_position">Group by Position ></string>
+	<string name="menu_sort">Sort by></string>
+	<string name="menu_number">Number</string>
+	<string name="menu_name">Name</string>
+	<string name="menu_all">All</string>
+	<string name="menu_qb">QB</string>
+	<string name="menu_rb">RB</string>
+	<string name="menu_wr">WR</string>
+	<string name="menu_te">TE</string>
+	<string name="menu_ol">OL</string>
+	<string name="menu_dl">DL</string>
+	<string name="menu_lb">LB</string>
+	<string name="menu_cb">CB</string>
+	<string name="menu_s">S</string>
+	<string name="menu_sp">Special</string>
 </resources>

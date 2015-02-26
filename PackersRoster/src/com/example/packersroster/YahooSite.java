@@ -103,7 +103,7 @@ public class YahooSite implements WebSite {
 				if(salary.startsWith("<span")) salary = " - "; 
 				
 				Element playerName = player.select(".player a").get(0);
-				String name = playerName.html();
+				String name = formatName(playerName.html());
 				String link = playerName.attr("href");
 				
 				Elements positions = player.select(".position > abbr");
@@ -113,12 +113,14 @@ public class YahooSite implements WebSite {
 					if(k == 0) position = positions.get(k).html();
 					else position += ("\\" + positions.get(k).html());
 				}
+				String groupPos = getGrouping(position);
 				
 				Player tempPlayer = new Player(name, position, number);
 				tempPlayer.age = age;
 				tempPlayer.college = college;
 				tempPlayer.experience = experience;
 				tempPlayer.salary = salary;
+				tempPlayer.group = groupPos;
 				tempPlayer.setPosition(position);
 				tempPlayer.setLink("http://sports.yahoo.com" + link);
 				player_list.add(tempPlayer);
@@ -127,6 +129,27 @@ public class YahooSite implements WebSite {
 		if(player_list.size() > 0) return true;
 		return false;
 	}
-
-
+	
+	private String formatName(String name) {
+		String[] names = name.split(" ");
+		
+		if(names.length > 1) {
+			String returnStr = names[1] + ", " + names[0];
+			return returnStr;
+		}
+		return name;
+	}
+	
+	private String getGrouping(String pos) {
+		if(pos.contains("QB")) return "QB";
+		if(pos.contains("RB") || pos.contains("FB")) return "RB";
+		if(pos.contains("WR")) return "WR";
+		if(pos.contains("TE")) return "TE";
+		if(pos.contains("OT") || pos.contains("OG") || pos.equals("C")) return "OL";
+		if(pos.contains("NT") || pos.contains("DE")) return "DL";
+		if(pos.contains("LB")) return "LB";
+		if(pos.contains("CB")) return "CB";
+		if(pos.contains("FS") || pos.contains("SS")) return "S";
+		else return "SP";
+	}
 }

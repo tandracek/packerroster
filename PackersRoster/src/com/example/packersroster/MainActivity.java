@@ -52,7 +52,8 @@ public class MainActivity extends Activity {
 		/*player_list.add(new Player("Aaron Rodgers", "QB", "12"));
 		player_list.add(new Player("Jordy Nelson", "WR", "87"));
 		player_list.add(new Player("Eddie Lacy", "RB", "27"));*/
-		
+		if(savedInstanceState == null) 
+		Log.v(TAG, "in oncreate");
 		
 		
 		roster_view = (ListView) findViewById(R.id.listView1);
@@ -113,6 +114,7 @@ public class MainActivity extends Activity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.refresh_roster:
+	        	if(roster_adapter.getCount() > 0) deleteRoster();
 	            refreshRoster();
 	            return true;
 	        case R.id.delete_roster:
@@ -123,12 +125,73 @@ public class MainActivity extends Activity {
 	        	Toast toast = Toast.makeText(main_context, "Deleted " + rows + " rows", Toast.LENGTH_SHORT);
 				toast.show();
 	        	return true;
+	        case R.id.menu_number:
+	        	roster_adapter.sort("number", "asc");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_name:
+	        	roster_adapter.sort("name", "asc");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_all:
+	        	roster_adapter.setSortPos("All");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_qb:
+	        	roster_adapter.setSortPos("QB");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_rb:
+	        	roster_adapter.setSortPos("RB");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_wr:
+	        	roster_adapter.setSortPos("WR");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_te:
+	        	roster_adapter.setSortPos("TE");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_ol:
+	        	roster_adapter.setSortPos("OL");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_dl:
+	        	roster_adapter.setSortPos("DL");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_lb:
+	        	roster_adapter.setSortPos("LB");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_cb:
+	        	roster_adapter.setSortPos("CB");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_s:
+	        	roster_adapter.setSortPos("S");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
+	        case R.id.menu_sp:
+	        	roster_adapter.setSortPos("SP");
+	        	roster_adapter.notifyDataSetChanged();
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
 	
 	
+	protected void onStop() {
+		super.onStop();
+		Log.v(TAG, "in on stop");
+	}
+	
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.v(TAG, "in on destroy");
+	}
 	
 }
 

@@ -1,5 +1,7 @@
 package com.example.packersroster;
 
+import android.util.Log;
+
 public class DraftInfo {
 	public String round;
 	public String pick;
@@ -16,6 +18,7 @@ public class DraftInfo {
 	}
 	
 	private void format(String draft) {
+		Log.v("DInfo", draft);
 		String[] draftArr = draft.split(" ");
 		round = draftArr[1].substring(0, 1);
 		year = draftArr[0];
