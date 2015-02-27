@@ -20,25 +20,18 @@ public class PlayerDetails extends Activity {
         setContentView(R.layout.details_layout);
         
         Intent intent = getIntent();
-        int playerID = intent.getIntExtra(MainActivity.PLAYER_EXTRA, 0);
-        
-        connection = new ConnHandler(this, this);
-        connection.connect_init("details", "details");
-        connection.setPid(playerID);
-        
-        dataHandler = new DataHandler(this);
-   
-        DataHandler dataHand = new DataHandler(this);
-        currPlayer = dataHand.getPlayer(playerID);
+        int playerId = intent.getIntExtra(MainActivity.PLAYER_EXTRA, 0);
+               
+        currPlayer = Connection.getPlayerById(playerId);
     
         TextView nameHeader = (TextView) findViewById(R.id.nameView);
-        nameHeader.setText(currPlayer.getName());
+        nameHeader.setText(currPlayer.name);
         
         TextView numberHeader = (TextView) findViewById(R.id.numberView);
-        numberHeader.setText("   - #" + currPlayer.getNumber());
+        numberHeader.setText("   - #" + currPlayer.number);
         
         TextView posHeader = (TextView) findViewById(R.id.posView);
-        posHeader.setText(currPlayer.getPosition());
+        posHeader.setText(currPlayer.position);
         
         TextView ageHeader = (TextView) findViewById(R.id.ageView);
         ageHeader.setText("Age: " + currPlayer.age);
@@ -50,7 +43,7 @@ public class PlayerDetails extends Activity {
         collegeHeader.setText("College: " + currPlayer.college);
         
         draftView = (TextView) findViewById(R.id.draftInfoView);
-        draftView.setText(currPlayer.draftStr);
+        draftView.setText(Connection.getDraftStr(0, currPlayer));
         
         TextView salaryHeader = (TextView) findViewById(R.id.salaryView);
         salaryHeader.setText("Salary: " + currPlayer.salary);
@@ -62,6 +55,7 @@ public class PlayerDetails extends Activity {
         	}
         });
     }
+	/* TODO: change how this works by having the connection return something, use a Handler object for the Connection */
 	public void buildAdapter() {
 		String draftStr = dataHandler.getValue("draft", "player_details", currPlayer.id);
 		DraftInfo dInfo = new DraftInfo(draftStr);

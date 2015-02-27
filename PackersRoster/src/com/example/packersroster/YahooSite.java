@@ -16,12 +16,16 @@ import android.util.Log;
 
 
 
-public class YahooSite implements WebSite {
+public class YahooSite extends WebSite {
 	private ArrayList<Player> player_list;
 	private Context context;
 	private Document doc;
 	private Elements details;
 	ProgressDialog progress;
+	
+	public YahooSite() {
+		
+	}
 	
 	public YahooSite(Context context) {
 		player_list = new ArrayList<Player>();
@@ -35,8 +39,8 @@ public class YahooSite implements WebSite {
 	public void setDraftInfo() {
 		String currLink;
 		for(int i =  0; i < player_list.size(); i++) {
-			currLink = player_list.get(i).getLink();
-			player_list.get(i).setDraftStr(getFromLink(currLink));
+			currLink = player_list.get(i).link;
+			player_list.get(i).draftStr = getFromLink(currLink);
 		}
 	}
 	
@@ -122,7 +126,7 @@ public class YahooSite implements WebSite {
 				tempPlayer.salary = salary;
 				tempPlayer.group = groupPos;
 				tempPlayer.setPosition(position);
-				tempPlayer.setLink("http://sports.yahoo.com" + link);
+				tempPlayer.link = "http://sports.yahoo.com" + link;
 				player_list.add(tempPlayer);
 			}
 		}
@@ -151,5 +155,17 @@ public class YahooSite implements WebSite {
 		if(pos.contains("CB")) return "CB";
 		if(pos.contains("FS") || pos.contains("SS")) return "S";
 		else return "SP";
+	}
+
+	@Override
+	String getDraftStr(String playerURL) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	DraftInfo getDraftInfo(String playerUrl) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

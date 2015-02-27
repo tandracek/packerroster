@@ -22,9 +22,11 @@
               </menu>
     </item>
         
+    
     <item android:id="@+id/group_position"
     	   android:title="@string/menu_position">
     	   <menu>
+    	<group android:id="@+id/position_group">
     	<item android:id="@+id/menu_all"
               android:title="@string/menu_all" />
         <item android:id="@+id/menu_qb"
@@ -47,6 +49,7 @@
               android:title="@string/menu_s" />
         <item android:id="@+id/menu_sp"
               android:title="@string/menu_sp" />
+        </group>
               </menu>
     </item>
     

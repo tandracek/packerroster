@@ -24,37 +24,28 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
-	private static final String TAG = "MainActivity";
 	public DataHandler roster_handler;
 	public Context main_context;
 	public RosterAdapter roster_adapter;
 	public ListView roster_view;
-	private MainActivity main_activity;
-	private ProgressDialog progress;
+	
 	private TextView helpText;
+	private static final String TAG = "MainActivity";
 	
 	public static ActionBar actionBar;
-
+	
+	/* New variables and all needed */
+	public static Connection connect;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		main_activity = this;
-		main_context = this;
+		/* TODO: figure out what this does */
 		actionBar = getActionBar();
 		setContentView(R.layout.activity_main);
 		
-		roster_handler = new DataHandler(this);
-		
-		ArrayList<Player> player_list = new ArrayList<Player>();
-		player_list = roster_handler.getRoster();
-		
-		/*player_list.add(new Player("Aaron Rodgers", "QB", "12"));
-		player_list.add(new Player("Jordy Nelson", "WR", "87"));
-		player_list.add(new Player("Eddie Lacy", "RB", "27"));*/
-		if(savedInstanceState == null) 
-		Log.v(TAG, "in oncreate");
-		
+		List<Player> player_list = Connection.getRoster(0);
 		
 		roster_view = (ListView) findViewById(R.id.listView1);
 		roster_adapter = new RosterAdapter(this, R.layout.roster_list, player_list); 
@@ -70,7 +61,6 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				// TODO Auto-generated method stub
 				Player player = roster_adapter.getItem(arg2);
 				
 				Intent mainIntent = new Intent(main_context, PlayerDetails.class);
@@ -81,25 +71,23 @@ public class MainActivity extends Activity {
 		});
 	}
 	public void buildAdapter() {
-		Log.v(TAG, "in build adapter");
 		roster_adapter.clear();
-		ArrayList<Player> player_list_1 = new ArrayList<Player>();
-		player_list_1 = roster_handler.getRoster();
+		List<Player> player_list_1 = Connection.getRoster(0);
 		roster_adapter.addAll(player_list_1);
 		roster_adapter.notifyDataSetChanged();
 		
 		if(player_list_1.size() > 0) helpText.setVisibility(View.GONE);
 	}
 	
+	/* TODO: Change to use new connection */
 	public void refreshRoster() {
-		ConnHandler connection = new ConnHandler(main_context, main_activity);
-		connection.connect_init("roster", "main");
-		connection.execute(" ");
+
 	}
 	
+	/* TODO: Change to use new connection */
 	public int deleteRoster() {
-		if(roster_handler == null) roster_handler = new DataHandler(main_context);
-		return roster_handler.deleteRoster();
+		
+		return 0;
 	}
 
 	@Override
@@ -112,6 +100,13 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
+		Log.v("MainActivity", "Group " + item.getGroupId());
+
+		if (item.getGroupId() == R.id.position_group) {
+        	roster_adapter.setSortPos(item.getTitle().toString());
+        	roster_adapter.notifyDataSetChanged();
+        	return true;
+		}
 	    switch (item.getItemId()) {
 	        case R.id.refresh_roster:
 	        	if(roster_adapter.getCount() > 0) deleteRoster();
@@ -131,50 +126,6 @@ public class MainActivity extends Activity {
 	        	return true;
 	        case R.id.menu_name:
 	        	roster_adapter.sort("name", "asc");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_all:
-	        	roster_adapter.setSortPos("All");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_qb:
-	        	roster_adapter.setSortPos("QB");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_rb:
-	        	roster_adapter.setSortPos("RB");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_wr:
-	        	roster_adapter.setSortPos("WR");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_te:
-	        	roster_adapter.setSortPos("TE");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_ol:
-	        	roster_adapter.setSortPos("OL");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_dl:
-	        	roster_adapter.setSortPos("DL");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_lb:
-	        	roster_adapter.setSortPos("LB");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_cb:
-	        	roster_adapter.setSortPos("CB");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_s:
-	        	roster_adapter.setSortPos("S");
-	        	roster_adapter.notifyDataSetChanged();
-	        	return true;
-	        case R.id.menu_sp:
-	        	roster_adapter.setSortPos("SP");
 	        	roster_adapter.notifyDataSetChanged();
 	        	return true;
 	        default:

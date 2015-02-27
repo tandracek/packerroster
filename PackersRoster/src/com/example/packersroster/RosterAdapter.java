@@ -3,6 +3,7 @@ package com.example.packersroster;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
@@ -18,15 +19,15 @@ public class RosterAdapter extends ArrayAdapter<Player> {
 		TextView textView1;
 	}
 	
-	private ArrayList<Player> roster_list;
-	private ArrayList<Player> hidden_list;
+	private List<Player> roster_list;
+	private List<Player> hidden_list;
 	private Context context;
 	private String sortPos;
 	private boolean useHidden;
 	private int layout;
 
 	public RosterAdapter(Context context, int resource,
-			ArrayList<Player> roster_list) {
+			List<Player> roster_list) {
 		super(context, resource, roster_list);
 		this.roster_list = roster_list;
 		this.context = context;
@@ -59,7 +60,7 @@ public class RosterAdapter extends ArrayAdapter<Player> {
 		sortPos = pos;
 	}
 	
-	private void addAll(ArrayList<Player> source, ArrayList<Player> hidden) {
+	private void addAll(List<Player> source, List<Player> hidden) {
 		Player tempPlayer;
 		for(int i = 0; i < hidden.size(); i++) {
 			tempPlayer = hidden.get(i);
@@ -67,7 +68,7 @@ public class RosterAdapter extends ArrayAdapter<Player> {
 		}
 	}
 	
-	private void switchLists(ArrayList<Player> source, ArrayList<Player> hidden, String pos) {
+	private void switchLists(List<Player> source, List<Player> hidden, String pos) {
 		Player tempPlayer;
 		for(int i = (source.size() - 1); i >= 0; i--) {
 			tempPlayer = source.get(i);
@@ -79,7 +80,7 @@ public class RosterAdapter extends ArrayAdapter<Player> {
 	}
 	
 	public void sort(String value, String order) {
-		ArrayList<Player> toSort;
+		List<Player> toSort;
 		if(useHidden) toSort = hidden_list;
 		else toSort = roster_list;
 		Player.sortBy = value;
