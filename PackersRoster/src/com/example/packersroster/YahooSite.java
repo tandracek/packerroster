@@ -23,8 +23,10 @@ public class YahooSite extends WebSite {
 	private Elements details;
 	ProgressDialog progress;
 	
+	private final String YAHOO_MAIN_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
+	
 	public YahooSite() {
-		
+		player_list = new ArrayList<Player>();
 	}
 	
 	public YahooSite(Context context) {
@@ -33,6 +35,9 @@ public class YahooSite extends WebSite {
 	}
 	
 	public ArrayList<Player> getRoster() {
+		this.connect(YAHOO_MAIN_URL);
+		this.getInitialData();
+		this.getDetails();
 		return player_list;
 	}
 	

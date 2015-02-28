@@ -29,7 +29,7 @@ public class Player extends Model implements Comparable<Player>{
 	public String ht_wt;
 	@Column(name="college")
 	public String college;
-	@Column(name="group")
+	@Column(name="group_field")
 	public String group;
 	@Column(name="DraftInfo")
 	public DraftInfo draftInfo;

@@ -3,6 +3,10 @@ package com.example.packersroster;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.activeandroid.Model;
+import com.activeandroid.query.Select;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -41,6 +45,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		main_context = this;
 		/* TODO: figure out what this does */
 		actionBar = getActionBar();
 		setContentView(R.layout.activity_main);
@@ -67,7 +72,16 @@ public class MainActivity extends Activity {
 				mainIntent.putExtra(PLAYER_EXTRA, player.id);
 				startActivity(mainIntent);
 			}
-			
+		});
+		
+		Button testBtn = (Button) findViewById(R.id.testBtn);
+		//testBtn.setVisibility(View.GONE);
+		testBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				//Connection.getAndShowRoster(1, roster_adapter, roster_view, main_context);
+			}
 		});
 	}
 	public void buildAdapter() {
@@ -81,7 +95,7 @@ public class MainActivity extends Activity {
 	
 	/* TODO: Change to use new connection */
 	public void refreshRoster() {
-
+		new RosterDownload().execute();
 	}
 	
 	/* TODO: Change to use new connection */
@@ -144,6 +158,27 @@ public class MainActivity extends Activity {
 		Log.v(TAG, "in on destroy");
 	}
 	
+	private class RosterDownload extends AsyncTask<String, String, List<Player>> {
+
+		ProgressDialog pDialog;
+		protected void onPreExecute() {
+			pDialog = new ProgressDialog(MainActivity.this, ProgressDialog.STYLE_HORIZONTAL);
+			pDialog = ProgressDialog.show(MainActivity.this, "Getting Roster", "Retrieving roster...");		
+		}
+
+		@Override
+		protected List<Player> doInBackground(String... params) {
+			return Connection.getRoster(1);
+		}
+		
+		@Override
+	    protected void onPostExecute(List<Player> result) {
+			roster_adapter.addAll(result);
+			roster_adapter.notifyDataSetChanged();
+			pDialog.dismiss();
+	    }
+
+	}
 }
 
 

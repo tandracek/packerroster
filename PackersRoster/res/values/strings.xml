@@ -24,4 +24,6 @@
 	<string name="menu_cb">CB</string>
 	<string name="menu_s">S</string>
 	<string name="menu_sp">Special</string>
+	
+	<string name="test">Test</string>
 </resources>

@@ -1,16 +1,23 @@
 package com.example.packersroster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /*
  * The reason that would be for this intermediate class, instead of calling the site class directly, as this 
  *  would also handle all the database stuff.
  */
 public class Connection {
-
 	private static int websiteId;
 	private static WebSite website;
 	public Connection() {
@@ -55,6 +62,10 @@ public class Connection {
 		}
 		
 		return d.getDraftDisplay();
+	}
+	
+	public static void deleteRoster() {
+		new Delete().from(Player.class).execute();
 	}
 	
 	private static void deriveSite(int websiteId) {

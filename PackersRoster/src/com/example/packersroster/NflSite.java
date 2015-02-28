@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 
 import android.util.Log;
 
-public class NflSite implements WebSite{
+public class NflSite extends WebSite{
 	private ArrayList<Player> player_list;
 	
 	public NflSite() {
@@ -57,6 +57,18 @@ public class NflSite implements WebSite{
 	public boolean getDetails() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	String getDraftStr(String playerURL) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	DraftInfo getDraftInfo(String playerUrl) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
