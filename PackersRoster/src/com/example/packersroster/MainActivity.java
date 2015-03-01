@@ -1,26 +1,18 @@
 package com.example.packersroster;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.activeandroid.Model;
-import com.activeandroid.query.Select;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,8 +28,6 @@ public class MainActivity extends Activity {
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
 	
-	public static ActionBar actionBar;
-	
 	/* New variables and all needed */
 	public static Connection connect;
 	
@@ -46,8 +36,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		main_context = this;
-		/* TODO: figure out what this does */
-		actionBar = getActionBar();
 		setContentView(R.layout.activity_main);
 		
 		List<Player> player_list = Connection.getRoster(0);
@@ -93,7 +81,6 @@ public class MainActivity extends Activity {
 		if(player_list_1.size() > 0) helpText.setVisibility(View.GONE);
 	}
 	
-	/* TODO: Change to use new connection */
 	public void refreshRoster() {
 		new RosterDownload().execute();
 	}
@@ -113,9 +100,6 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-		Log.v("MainActivity", "Group " + item.getGroupId());
-
 		if (item.getGroupId() == R.id.position_group) {
         	roster_adapter.setSortPos(item.getTitle().toString());
         	roster_adapter.notifyDataSetChanged();
@@ -147,15 +131,12 @@ public class MainActivity extends Activity {
 	    }
 	}
 	
-	
 	protected void onStop() {
 		super.onStop();
-		Log.v(TAG, "in on stop");
 	}
 	
 	protected void onDestroy() {
 		super.onDestroy();
-		Log.v(TAG, "in on destroy");
 	}
 	
 	private class RosterDownload extends AsyncTask<String, String, List<Player>> {

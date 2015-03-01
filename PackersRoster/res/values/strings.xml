@@ -25,5 +25,8 @@
 	<string name="menu_s">S</string>
 	<string name="menu_sp">Special</string>
 	
+	<string name="undrafted">Undrafted</string>
+	<string name="dtl_college_displ">College: </string>
+	
 	<string name="test">Test</string>
 </resources>

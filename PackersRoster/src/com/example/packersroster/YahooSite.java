@@ -1,7 +1,6 @@
 package com.example.packersroster;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -11,17 +10,11 @@ import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
-
-
 
 public class YahooSite extends WebSite {
 	private ArrayList<Player> player_list;
-	private Context context;
 	private Document doc;
-	private Elements details;
-	ProgressDialog progress;
 	
 	private final String YAHOO_MAIN_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
 	
@@ -29,15 +22,9 @@ public class YahooSite extends WebSite {
 		player_list = new ArrayList<Player>();
 	}
 	
-	public YahooSite(Context context) {
-		player_list = new ArrayList<Player>();
-		this.context = context;
-	}
-	
 	public ArrayList<Player> getRoster() {
 		this.connect(YAHOO_MAIN_URL);
-		this.getInitialData();
-		this.getDetails();
+		this.parseRoster();
 		return player_list;
 	}
 	
@@ -45,37 +32,11 @@ public class YahooSite extends WebSite {
 		String currLink;
 		for(int i =  0; i < player_list.size(); i++) {
 			currLink = player_list.get(i).link;
-			player_list.get(i).draftStr = getFromLink(currLink);
+			player_list.get(i).draftInfo = this.getDraftInfo(currLink);
 		}
 	}
 	
-	public String getFromLink(String link) {
-		Document doc = null;
-		try {
-			doc = Jsoup
-					.connect(
-							link)
-					.get();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		Element bio = doc.select(".bio").get(0);
-		String draftInfo = bio.select(".draft dd").html();
-		
-		return draftInfo;
-	}
-	
-	public String getDraftDetails() {
-		Element bio = doc.select(".bio").get(0);
-		String draftInfo = bio.select(".draft dd").html();
-		
-		return draftInfo;
-	}
-	
-	@Override
-	public boolean connect(String URL) {
+	private boolean connect(String URL) {
 		try {
 			doc = Jsoup
 					.connect(
@@ -83,23 +44,15 @@ public class YahooSite extends WebSite {
 					.get();
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} 
 	}
 
-	@Override
-	public boolean getInitialData() {
-		details = doc.select("#mediasportsteamroster > .bd > .position-group");
-		if(details.size() > 0) return true;
-		Log.v("Initial data", "Returned false");
-		return false;
-	}
-
-	@Override
-	public boolean getDetails() {
-		// TODO Auto-generated method stub
+	private void parseRoster() {
+		Elements details = doc.select("#mediasportsteamroster > .bd > .position-group");
+		if(details.size() == 0) return;
+				
 		for(int i = 0; i < details.size(); i++) {
 			Elements player_eles = details.get(i).select("tr");
 			for(int j = 1; j < player_eles.size(); j++) {
@@ -130,13 +83,11 @@ public class YahooSite extends WebSite {
 				tempPlayer.experience = experience;
 				tempPlayer.salary = salary;
 				tempPlayer.group = groupPos;
-				tempPlayer.setPosition(position);
+				tempPlayer.position = position;
 				tempPlayer.link = "http://sports.yahoo.com" + link;
 				player_list.add(tempPlayer);
 			}
 		}
-		if(player_list.size() > 0) return true;
-		return false;
 	}
 	
 	private String formatName(String name) {
@@ -149,7 +100,7 @@ public class YahooSite extends WebSite {
 		return name;
 	}
 	
-	private String getGrouping(String pos) {
+	public static String getGrouping(String pos) {
 		if(pos.contains("QB")) return "QB";
 		if(pos.contains("RB") || pos.contains("FB")) return "RB";
 		if(pos.contains("WR")) return "WR";
@@ -163,14 +114,29 @@ public class YahooSite extends WebSite {
 	}
 
 	@Override
-	String getDraftStr(String playerURL) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	DraftInfo getDraftInfo(String playerUrl) {
-		// TODO Auto-generated method stub
-		return null;
+		this.connect(playerUrl);
+		Element bio = doc.select(".bio").get(0);
+		String draft = bio.select(".draft dd").html();
+
+		if(draft.contains("Undrafted")) {
+			return new DraftInfo(true);
+		}
+		
+		String[] draftArr = draft.split(" ");
+		String round = draftArr[1].substring(0, 1);
+		String year = draftArr[0];
+		
+		String team = "";
+		for(int i = 7; i < draftArr.length; i++) {
+			team += draftArr[i] + " ";
+		}
+		
+		String pick;
+		String temp = draftArr[3];
+		if(temp.length() >= 4) pick = temp.substring(1, 3);
+		else pick = temp.substring(1, 2);
+		
+		return new DraftInfo(round, pick, team, year);
 	}
 }

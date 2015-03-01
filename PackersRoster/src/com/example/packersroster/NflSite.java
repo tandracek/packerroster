@@ -13,20 +13,18 @@ import android.util.Log;
 public class NflSite extends WebSite{
 	private ArrayList<Player> player_list;
 	
+	private final String NFL_MAIN_URL = "http://www.nfl.com/players/search?category=team&filter=1800&playerType=current";
+	
 	public NflSite() {
 		player_list = new ArrayList<Player>();
 	}
 	
-	public ArrayList<Player> getRoster() {
-		return player_list;
-	}
-	
 	@Override
-	public boolean connect(String URL) {
+	public ArrayList<Player> getRoster() {
 		// TODO Auto-generated method stub
 		Document nfl_com_doc = null;
 		try {
-			nfl_com_doc = Jsoup.connect(URL).get();
+			nfl_com_doc = Jsoup.connect(NFL_MAIN_URL).get();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,27 +40,7 @@ public class NflSite extends WebSite{
 			player_list.add(new Player(playerName, "N", "1"));
 		}
 		
-		if(player_list.size() > 0) return true;
-		Log.v("nfl site", "returned false");
-		return false;
-	}
-
-	@Override
-	public boolean getInitialData() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean getDetails() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	String getDraftStr(String playerURL) {
-		// TODO Auto-generated method stub
-		return null;
+		return player_list;
 	}
 
 	@Override

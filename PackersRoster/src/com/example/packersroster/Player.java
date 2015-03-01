@@ -49,37 +49,6 @@ public class Player extends Model implements Comparable<Player>{
 		this.number = number;
 	}
 	
-	public String getDraftDisplay() {
-		if(this.draftStr.length() > 0) this.draftInfo = new DraftInfo(draftStr);
-		else return draftStr;
-		
-		return draftInfo.getDraftDisplay();
-	}
-	
-	public void initDraftInfo() {
-		if(draftStr.length() > 0) this.draftInfo = new DraftInfo(this.draftStr);
-	}
-	
-	public void setDraftInfo(String draft) {
-		this.draftInfo = new DraftInfo(draft);
-	}
-	
-	public String getDraftYear() {
-		return draftInfo.year;
-	}
-	
-	public String getDraftPick() {
-		return draftInfo.pick;
-	}
-	
-	public String getDraftTeam() {
-		return draftInfo.team;
-	}
-	
-	public String getDraftRound() {
-		return draftInfo.round;
-	}
-	
 	public int getNumAsInt() {
 		int c_number;
 		try {
@@ -88,10 +57,6 @@ public class Player extends Model implements Comparable<Player>{
 			return 0;
 		}
 		return c_number;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
 	}
 
 	@Override

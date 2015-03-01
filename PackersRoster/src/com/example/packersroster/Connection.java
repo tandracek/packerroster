@@ -50,18 +50,18 @@ public class Connection {
 		return new Select().from(Player.class).where("Player = ?", playerId).executeSingle();
 	}
 	
-	public static String getDraftStr(int websiteId, Player player) {
+	public static DraftInfo getDraftStr(int websiteId, Player player) {
 		Connection.deriveSite(websiteId);
 		
 		DraftInfo d;
 		if (website == null) {
-			d = new Select().from(DraftInfo.class).where("Player = ?", player).executeSingle();
+			d = new Select().from(DraftInfo.class).where("Player = ?", player.getId()).executeSingle();
 		} else {
 			d = website.getDraftInfo(player.link);
 			d.save();
 		}
 		
-		return d.getDraftDisplay();
+		return d;
 	}
 	
 	public static void deleteRoster() {

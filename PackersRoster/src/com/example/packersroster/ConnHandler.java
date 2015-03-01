@@ -76,15 +76,7 @@ public class ConnHandler extends AsyncTask<String, String, String>{
 	}
 	
 	public void returnToActivity() {
-		Log.v("return", "return act = " + returnAct);
-		switch(returnAct) {
-		case 1:
-			((MainActivity) main).buildAdapter();
-			break;
-		case 2:
-			((PlayerDetails) main).buildAdapter();
-			break;
-		}
+
 	}
 
 	@Override
@@ -103,47 +95,6 @@ public class ConnHandler extends AsyncTask<String, String, String>{
 	@Override
 	protected String doInBackground(String... params) {
 		String errMsg = null;
-		boolean err = false;;
-		switch(site) {
-		case 1: yahoo = new YahooSite(context);
-				err = yahoo.connect(YAHOO_MAIN_URL);
-				if(!err) {
-					errMsg = "Error connecting to site. Try again.";
-					break;
-				}
-				publishProgress("Connected, getting roster.");
-				
-				err = yahoo.getInitialData();
-				if(!err) {
-					errMsg = "Did not get any initial data.";
-					break;
-				}
-				publishProgress("Got the roster, getting individual player info.");
-				
-				err = yahoo.getDetails();
-				if(!err) {
-					errMsg = "Could not get the details";
-					break;
-				}
-				publishProgress("Got the roster, getting individual player info.");
-				
-				this.player_list = yahoo.getRoster();
-				err = true;
-				
-				break;
-		case 2: NflSite nfl = new NflSite();
-				err = nfl.connect(NFL_MAIN_URL);
-				if(!err) break;
-				this.player_list = nfl.getRoster();
-		case 3: yahoo = new YahooSite(context);
-				err = yahoo.connect(params[0]);
-				if(!err) {
-					errMsg = "Did not get any initial data.";
-					break;
-				}
-				draftStr = yahoo.getDraftDetails();
-				break;
-		}
 		
 		return errMsg;
 	}
