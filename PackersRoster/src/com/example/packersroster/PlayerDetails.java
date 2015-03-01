@@ -23,8 +23,7 @@ public class PlayerDetails extends Activity {
         aBar.setDisplayHomeAsUpEnabled(true);
         
         Intent intent = getIntent();
-        int playerId = intent.getIntExtra(MainActivity.PLAYER_EXTRA, 0);
-               
+        Long playerId = intent.getLongExtra(MainActivity.PLAYER_EXTRA, 0);
         currPlayer = Connection.getPlayerById(playerId);
     
         this.buildTextView(R.id.nameView, currPlayer.name);
@@ -46,6 +45,8 @@ public class PlayerDetails extends Activity {
     }
 	
 	private void buildDraftDetailsView(DraftInfo dInfo) {
+		if(dInfo == null) return;
+		
 		String dText;
 		if (dInfo.isUndrafted) {
 			dText = this.getResources().getString(R.string.undrafted);

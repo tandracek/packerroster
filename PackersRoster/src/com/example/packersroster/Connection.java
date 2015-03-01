@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
+import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
+import com.activeandroid.util.SQLiteUtils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -46,8 +49,8 @@ public class Connection {
 		return roster;
 	}
 	
-	public static Player getPlayerById(int playerId) {
-		return new Select().from(Player.class).where("Player = ?", playerId).executeSingle();
+	public static Player getPlayerById(Long playerId) {
+		return Model.load(Player.class, playerId);
 	}
 	
 	public static DraftInfo getDraftStr(int websiteId, Player player) {
@@ -58,14 +61,17 @@ public class Connection {
 			d = new Select().from(DraftInfo.class).where("Player = ?", player.getId()).executeSingle();
 		} else {
 			d = website.getDraftInfo(player.link);
+			d.player = player;
 			d.save();
 		}
 		
 		return d;
 	}
 	
-	public static void deleteRoster() {
-		new Delete().from(Player.class).execute();
+	public static int deleteRoster() {
+		From f = new Delete().from(Player.class);
+		f.execute();
+		return f.count();
 	}
 	
 	private static void deriveSite(int websiteId) {

@@ -95,13 +95,12 @@ public class RosterAdapter extends ArrayAdapter<Player> {
 		else return roster_list.size();
 	}
 	
-	/* Look at this more closely, don't i want to clear both? */
 	@Override
 	public void clear() {
 		super.clear();
 		
-		if(useHidden) roster_list.clear();
-		else hidden_list.clear();
+		roster_list.clear();
+		hidden_list.clear();
 	}
 
 	@Override

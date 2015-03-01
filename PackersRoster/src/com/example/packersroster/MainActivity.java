@@ -4,11 +4,11 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +18,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+ * TODO: build config page
+ */
 public class MainActivity extends Activity {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
 	public DataHandler roster_handler;
@@ -28,15 +31,14 @@ public class MainActivity extends Activity {
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
 	
-	/* New variables and all needed */
-	public static Connection connect;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		main_context = this;
 		setContentView(R.layout.activity_main);
+		
+		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 		
 		List<Player> player_list = Connection.getRoster(0);
 		
@@ -57,13 +59,13 @@ public class MainActivity extends Activity {
 				Player player = roster_adapter.getItem(arg2);
 				
 				Intent mainIntent = new Intent(main_context, PlayerDetails.class);
-				mainIntent.putExtra(PLAYER_EXTRA, player.id);
+				mainIntent.putExtra(PLAYER_EXTRA, player.getId());
 				startActivity(mainIntent);
 			}
 		});
 		
 		Button testBtn = (Button) findViewById(R.id.testBtn);
-		//testBtn.setVisibility(View.GONE);
+		testBtn.setVisibility(View.GONE);
 		testBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -79,16 +81,6 @@ public class MainActivity extends Activity {
 		roster_adapter.notifyDataSetChanged();
 		
 		if(player_list_1.size() > 0) helpText.setVisibility(View.GONE);
-	}
-	
-	public void refreshRoster() {
-		new RosterDownload().execute();
-	}
-	
-	/* TODO: Change to use new connection */
-	public int deleteRoster() {
-		
-		return 0;
 	}
 
 	@Override
@@ -107,11 +99,11 @@ public class MainActivity extends Activity {
 		}
 	    switch (item.getItemId()) {
 	        case R.id.refresh_roster:
-	        	if(roster_adapter.getCount() > 0) deleteRoster();
-	            refreshRoster();
+	        	if(roster_adapter.getCount() > 0) Connection.deleteRoster();
+	        	new RosterDownload().execute();
 	            return true;
 	        case R.id.delete_roster:
-	        	int rows = deleteRoster();
+	        	int rows = Connection.deleteRoster();
 	        	roster_adapter.clear();
 	        	roster_adapter.notifyDataSetChanged();
 	        	helpText.setVisibility(View.VISIBLE);
@@ -126,6 +118,8 @@ public class MainActivity extends Activity {
 	        	roster_adapter.sort("name", "asc");
 	        	roster_adapter.notifyDataSetChanged();
 	        	return true;
+	        case R.id.settings_id:
+				startActivity(new Intent(main_context, SettingsActivity.class));
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -154,8 +148,11 @@ public class MainActivity extends Activity {
 		
 		@Override
 	    protected void onPostExecute(List<Player> result) {
-			roster_adapter.addAll(result);
-			roster_adapter.notifyDataSetChanged();
+			if(result.size() > 0) {
+				helpText.setVisibility(View.GONE);
+				roster_adapter.addAll(result);
+				roster_adapter.notifyDataSetChanged();
+			}
 			pDialog.dismiss();
 	    }
 

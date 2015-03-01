@@ -16,7 +16,7 @@ public class DraftInfo extends Model {
 	public String year;
 	@Column(name="team")
 	public String team;
-	@Column(name="name")
+	@Column(name="Player")
 	public Player player;
 	public boolean isUndrafted;
 	
