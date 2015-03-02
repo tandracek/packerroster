@@ -27,12 +27,11 @@
 	
 	<string name="undrafted">Undrafted</string>
 	<string name="dtl_college_displ">College: </string>
-	
-	<string name="website_pref_default">Yahoo</string>
 	<string name="website_pref_title">Website</string>
 	
 	<string name="settings_title">Settings</string>
 	
 	
 	<string name="test">Test</string>
+	<integer name="website_pref_default" >1</integer>
 </resources>

@@ -12,7 +12,9 @@ import com.activeandroid.util.SQLiteUtils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -23,12 +25,14 @@ import android.widget.ListView;
 public class Connection {
 	private static int websiteId;
 	private static WebSite website;
-	public Connection() {
+	private Context context;
+	public Connection(Context context) {
 		website = null;
+		this.context = context;
 	}
 	
-	public static List<Player> getRoster(int websiteId) {
-		Connection.deriveSite(websiteId);
+	public List<Player> getRoster() {
+		this.deriveSite();
 		
 		List<Player> roster;
 		if (website == null) { /* Just get from database, no online connection */
@@ -53,8 +57,8 @@ public class Connection {
 		return Model.load(Player.class, playerId);
 	}
 	
-	public static DraftInfo getDraftStr(int websiteId, Player player) {
-		Connection.deriveSite(websiteId);
+	public DraftInfo getDraftStr(int websiteId, Player player) {
+		this.deriveSite();
 		
 		DraftInfo d;
 		if (website == null) {
@@ -74,15 +78,21 @@ public class Connection {
 		return f.count();
 	}
 	
-	private static void deriveSite(int websiteId) {
-		if (Connection.websiteId == websiteId) {
+	private void deriveSite() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		int id = prefs.getInt("website_pref", 1);
+		if (Connection.websiteId == id) {
 			return;
 		}
-		Connection.websiteId = websiteId;
-		//TODO: add proper ids within an xml
+		Connection.websiteId = id;
+		
+		// Ids of website based on array resource
 		switch(websiteId) {
 		case 1:
 			website = new YahooSite();
+			break;
+		case 2:
+			website = new NflSite();
 			break;
 		default:
 			website = null;

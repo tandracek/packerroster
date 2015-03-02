@@ -9,8 +9,8 @@ package com.example.packersroster;
 
 public final class R {
     public static final class array {
-        public static final int website_urls=0x7f040001;
         public static final int websites=0x7f040000;
+        public static final int websites_id=0x7f040001;
     }
     public static final class attr {
     }
@@ -28,38 +28,41 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int ageView=0x7f090006;
-        public static final int blankText=0x7f090001;
-        public static final int collegeView=0x7f090008;
-        public static final int delete_roster=0x7f09000f;
-        public static final int detailsBtn=0x7f09000a;
-        public static final int draftInfoView=0x7f09000b;
-        public static final int expView=0x7f090007;
-        public static final int group_position=0x7f090013;
-        public static final int group_sort=0x7f090010;
-        public static final int listView1=0x7f090002;
-        public static final int menu_all=0x7f090015;
-        public static final int menu_cb=0x7f09001d;
-        public static final int menu_dl=0x7f09001b;
-        public static final int menu_lb=0x7f09001c;
-        public static final int menu_name=0x7f090012;
-        public static final int menu_number=0x7f090011;
-        public static final int menu_ol=0x7f09001a;
-        public static final int menu_qb=0x7f090016;
-        public static final int menu_rb=0x7f090017;
-        public static final int menu_s=0x7f09001e;
-        public static final int menu_sp=0x7f09001f;
-        public static final int menu_te=0x7f090019;
-        public static final int menu_wr=0x7f090018;
-        public static final int nameView=0x7f090003;
-        public static final int numberView=0x7f090005;
-        public static final int posView=0x7f090004;
-        public static final int position_group=0x7f090014;
-        public static final int refresh_roster=0x7f09000e;
-        public static final int salaryView=0x7f090009;
-        public static final int settings_id=0x7f09000d;
-        public static final int testBtn=0x7f090000;
-        public static final int textView1=0x7f09000c;
+        public static final int ageView=0x7f0a0006;
+        public static final int blankText=0x7f0a0001;
+        public static final int collegeView=0x7f0a0008;
+        public static final int delete_roster=0x7f0a000f;
+        public static final int detailsBtn=0x7f0a000a;
+        public static final int draftInfoView=0x7f0a000b;
+        public static final int expView=0x7f0a0007;
+        public static final int group_position=0x7f0a0013;
+        public static final int group_sort=0x7f0a0010;
+        public static final int listView1=0x7f0a0002;
+        public static final int menu_all=0x7f0a0015;
+        public static final int menu_cb=0x7f0a001d;
+        public static final int menu_dl=0x7f0a001b;
+        public static final int menu_lb=0x7f0a001c;
+        public static final int menu_name=0x7f0a0012;
+        public static final int menu_number=0x7f0a0011;
+        public static final int menu_ol=0x7f0a001a;
+        public static final int menu_qb=0x7f0a0016;
+        public static final int menu_rb=0x7f0a0017;
+        public static final int menu_s=0x7f0a001e;
+        public static final int menu_sp=0x7f0a001f;
+        public static final int menu_te=0x7f0a0019;
+        public static final int menu_wr=0x7f0a0018;
+        public static final int nameView=0x7f0a0003;
+        public static final int numberView=0x7f0a0005;
+        public static final int posView=0x7f0a0004;
+        public static final int position_group=0x7f0a0014;
+        public static final int refresh_roster=0x7f0a000e;
+        public static final int salaryView=0x7f0a0009;
+        public static final int settings_id=0x7f0a000d;
+        public static final int testBtn=0x7f0a0000;
+        public static final int textView1=0x7f0a000c;
+    }
+    public static final class integer {
+        public static final int website_pref_default=0x7f070000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -69,10 +72,10 @@ public final class R {
         public static final int roster_list=0x7f030004;
     }
     public static final class menu {
-        public static final int main=0x7f080000;
+        public static final int main=0x7f090000;
     }
     public static final class string {
-        public static final int Yahoo=0x7f06001d;
+        public static final int Yahoo=0x7f06001c;
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int delete_roster=0x7f060005;
@@ -97,11 +100,10 @@ public final class R {
         public static final int menu_wr=0x7f06000f;
         public static final int refresh_roster=0x7f060004;
         public static final int roster_label=0x7f060003;
-        public static final int settings_title=0x7f06001b;
-        public static final int test=0x7f06001c;
+        public static final int settings_title=0x7f06001a;
+        public static final int test=0x7f06001b;
         public static final int undrafted=0x7f060017;
-        public static final int website_pref_default=0x7f060019;
-        public static final int website_pref_title=0x7f06001a;
+        public static final int website_pref_title=0x7f060019;
     }
     public static final class style {
         /** 
@@ -125,10 +127,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f070000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f070001;
+        public static final int AppTheme=0x7f080001;
     }
 }

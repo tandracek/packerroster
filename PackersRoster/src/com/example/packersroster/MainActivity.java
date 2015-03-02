@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
 		
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 		
-		List<Player> player_list = Connection.getRoster(0);
+		List<Player> player_list = new Connection(this).getRoster();
 		
 		roster_view = (ListView) findViewById(R.id.listView1);
 		roster_adapter = new RosterAdapter(this, R.layout.roster_list, player_list); 
@@ -74,15 +75,7 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
-	public void buildAdapter() {
-		roster_adapter.clear();
-		List<Player> player_list_1 = Connection.getRoster(0);
-		roster_adapter.addAll(player_list_1);
-		roster_adapter.notifyDataSetChanged();
-		
-		if(player_list_1.size() > 0) helpText.setVisibility(View.GONE);
-	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -120,6 +113,7 @@ public class MainActivity extends Activity {
 	        	return true;
 	        case R.id.settings_id:
 				startActivity(new Intent(main_context, SettingsActivity.class));
+				return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
@@ -143,7 +137,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected List<Player> doInBackground(String... params) {
-			return Connection.getRoster(1);
+			return new Connection(MainActivity.this).getRoster();
 		}
 		
 		@Override

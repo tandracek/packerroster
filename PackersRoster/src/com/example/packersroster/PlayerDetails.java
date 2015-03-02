@@ -34,7 +34,7 @@ public class PlayerDetails extends Activity {
         this.buildTextView(R.id.collegeView, "College: " + currPlayer.college);
         this.buildTextView(R.id.salaryView, "Salary: " + currPlayer.salary);
         
-        this.buildDraftDetailsView(Connection.getDraftStr(0, currPlayer));
+        this.buildDraftDetailsView(new Connection(this).getDraftStr(0, currPlayer));
         
         Button detailsBtn = (Button) findViewById(R.id.detailsBtn);
         detailsBtn.setOnClickListener(new View.OnClickListener(){
@@ -70,7 +70,7 @@ public class PlayerDetails extends Activity {
 		
 		@Override
 		protected DraftInfo doInBackground(String... params) {
-			return Connection.getDraftStr(1, currPlayer);
+			return new Connection(PlayerDetails.this).getDraftStr(1, currPlayer);
 		}
 		
 		@Override
