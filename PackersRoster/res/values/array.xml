@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="websites">
+        <item >Yahoo.com</item>
+        <item >Nfl.com</item>
+    </string-array>
+    <integer-array name="websites_id">
+        <item >1</item>
+        <item >2</item>
+    </integer-array>
+    
+</resources>

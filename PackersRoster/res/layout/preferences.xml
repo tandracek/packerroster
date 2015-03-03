@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="website_pref"
+        android:title="@string/website_pref_title"
+        android:entries="@array/websites"
+        android:entryValues="@array/websites_id"
+        android:defaultValue="@integer/website_pref_default" />
+</PreferenceScreen>
