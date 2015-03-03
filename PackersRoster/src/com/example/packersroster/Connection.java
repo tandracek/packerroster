@@ -1,6 +1,5 @@
 package com.example.packersroster;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
@@ -8,15 +7,10 @@ import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
-import com.activeandroid.util.SQLiteUtils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 /*
  * The reason that would be for this intermediate class, instead of calling the site class directly, as this 
@@ -31,18 +25,20 @@ public class Connection {
 		this.context = context;
 	}
 	
-	public List<Player> getRoster() {
-		this.deriveSite();
-		
-		List<Player> roster;
-		if (website == null) { /* Just get from database, no online connection */
+	public List<Player> getRoster(boolean goOnline) {
+		if (!goOnline) { 
 			return new Select().from(Player.class).execute();
 		}
 		
+		this.deriveSite();
+		
+		List<Player> roster;
 		roster = website.getRoster();
 		ActiveAndroid.beginTransaction();
 		try {
+			String sport = MainActivity.sport;
 			for(Player p : roster) {
+				p.sport = sport;
 				p.save();
 			}
 			ActiveAndroid.setTransactionSuccessful();
@@ -57,18 +53,17 @@ public class Connection {
 		return Model.load(Player.class, playerId);
 	}
 	
-	public DraftInfo getDraftStr(int websiteId, Player player) {
-		this.deriveSite();
-		
-		DraftInfo d;
-		if (website == null) {
-			d = new Select().from(DraftInfo.class).where("Player = ?", player.getId()).executeSingle();
-		} else {
-			d = website.getDraftInfo(player.link);
-			d.player = player;
-			d.save();
+	public DraftInfo getDraftStr(boolean goOnline, Player player) {
+		if(!goOnline) {
+			return new Select().from(DraftInfo.class).where("Player = ?", player.getId()).executeSingle();
 		}
 		
+		this.deriveSite();
+		
+		DraftInfo d = website.getDraftInfo(player.link);
+		d.player = player;
+		d.save();
+
 		return d;
 	}
 	
@@ -79,20 +74,27 @@ public class Connection {
 	}
 	
 	private void deriveSite() {
+		if (Connection.websiteId == 0) {
+			website = null;
+			return;
+		}
+		
+		/* TODO: error check the parsing of the string */
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		int id = prefs.getInt("website_pref", 1);
+		String idArr[] = prefs.getString("website_pref", null).split(",");
+		int id = Integer.parseInt(idArr[0]);
+		String url = idArr[1];
+		
 		if (Connection.websiteId == id) {
 			return;
 		}
 		Connection.websiteId = id;
-		
-		// Ids of website based on array resource
 		switch(websiteId) {
 		case 1:
-			website = new YahooSite();
+			website = new YahooSite(url);
 			break;
 		case 2:
-			website = new NflSite();
+			website = new NflSite(url);
 			break;
 		default:
 			website = null;

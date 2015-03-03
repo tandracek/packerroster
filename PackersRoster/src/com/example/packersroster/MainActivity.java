@@ -2,6 +2,8 @@ package com.example.packersroster;
 
 import java.util.List;
 
+import com.activeandroid.query.Select;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,7 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
- * TODO: build config page
+ * TODO: build out other sports
+ *       -put new icon in actionbar, clicking will produce a dialog that will allow you to switch teams
+ *       -switching teams could just reset the player_list and then call to update the adapter and change color scheme, and update menu
+ *       -color scheme could just be a small header bar at top of list (always at top?) that shows text of team and color
  */
 public class MainActivity extends Activity {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
@@ -28,6 +33,8 @@ public class MainActivity extends Activity {
 	public Context main_context;
 	public RosterAdapter roster_adapter;
 	public ListView roster_view;
+	
+	public static String sport;
 	
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
@@ -40,8 +47,11 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
+		if (MainActivity.sport == null) {
+			MainActivity.sport = "NFL";
+		}
 		
-		List<Player> player_list = new Connection(this).getRoster();
+		List<Player> player_list = new Connection(this).getRoster(false);
 		
 		roster_view = (ListView) findViewById(R.id.listView1);
 		roster_adapter = new RosterAdapter(this, R.layout.roster_list, player_list); 
@@ -137,7 +147,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected List<Player> doInBackground(String... params) {
-			return new Connection(MainActivity.this).getRoster();
+			return new Connection(MainActivity.this).getRoster(true);
 		}
 		
 		@Override

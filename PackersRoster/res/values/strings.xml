@@ -9,6 +9,8 @@
     <string name="delete_roster">Delete</string>
     <string name="help_text">No data currently on the device.  Click on refresh in the menu.</string>
 	<string name="details_btn">Get details</string>
+	<string name="NFL">NFL</string>
+	<string name="MLB">MLB</string>
 	<string name="menu_position">Group by Position ></string>
 	<string name="menu_sort">Sort by></string>
 	<string name="menu_number">Number</string>
@@ -27,11 +29,14 @@
 	
 	<string name="undrafted">Undrafted</string>
 	<string name="dtl_college_displ">College: </string>
-	<string name="website_pref_title">Website</string>
+	<string name="website_pref_title">NFL Website</string>
+	<string name="website_mlb_pref_title">MLB Website</string>
 	
 	<string name="settings_title">Settings</string>
 	
 	
 	<string name="test">Test</string>
-	<integer name="website_pref_default" >1</integer>
+	
+	<string name="website_nfl_pref_default">1,http://sports.yahoo.com/nfl/teams/gnb/roster/</string>
+	<string name="website_mlb_pref_default">1,http://sports.yahoo.com/mlb/teams/mil/roster/</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.packersroster;
 
+import com.activeandroid.query.Select;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -34,7 +36,8 @@ public class PlayerDetails extends Activity {
         this.buildTextView(R.id.collegeView, "College: " + currPlayer.college);
         this.buildTextView(R.id.salaryView, "Salary: " + currPlayer.salary);
         
-        this.buildDraftDetailsView(new Connection(this).getDraftStr(0, currPlayer));
+        DraftInfo d = new Connection(this).getDraftStr(false, currPlayer);
+        this.buildDraftDetailsView(d);
         
         Button detailsBtn = (Button) findViewById(R.id.detailsBtn);
         detailsBtn.setOnClickListener(new View.OnClickListener(){
@@ -70,7 +73,7 @@ public class PlayerDetails extends Activity {
 		
 		@Override
 		protected DraftInfo doInBackground(String... params) {
-			return new Connection(PlayerDetails.this).getDraftStr(1, currPlayer);
+			return new Connection(PlayerDetails.this).getDraftStr(true, currPlayer);
 		}
 		
 		@Override

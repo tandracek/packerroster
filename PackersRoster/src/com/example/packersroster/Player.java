@@ -9,6 +9,8 @@ public class Player extends Model implements Comparable<Player>{
 	public int id = 0;
 	
 	public String sortedValue;
+	@Column(name="sport")
+	public String sport;
 	@Column(name="name")
 	public String name;
 	@Column(name="position")

@@ -30,6 +30,7 @@ public class SettingsActivity extends Activity {
             addPreferencesFromResource(R.layout.preferences);
             
             SettingsFragment.setSummary(findPreference("website_pref"));
+            SettingsFragment.setSummary(findPreference("website_mlb_pref"));
         }
         
         @Override

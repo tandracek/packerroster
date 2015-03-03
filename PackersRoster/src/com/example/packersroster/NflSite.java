@@ -11,12 +11,18 @@ import org.jsoup.select.Elements;
 import android.util.Log;
 
 public class NflSite extends WebSite{
+	public String url;
+	
 	private ArrayList<Player> player_list;
 	
 	private final String NFL_MAIN_URL = "http://www.nfl.com/players/search?category=team&filter=1800&playerType=current";
 	
 	public NflSite() {
 		player_list = new ArrayList<Player>();
+	}
+	
+	public NflSite(String url) {
+		this.url = url;
 	}
 	
 	@Override

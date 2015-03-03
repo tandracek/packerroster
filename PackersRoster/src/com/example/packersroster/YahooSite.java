@@ -12,7 +12,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
+/*
+ * TODO: move the connection method to super website class, put document and list in there as well
+ */
 public class YahooSite extends WebSite {
+	public String url;
+	
 	private ArrayList<Player> player_list;
 	private Document doc;
 	
@@ -20,10 +25,15 @@ public class YahooSite extends WebSite {
 	
 	public YahooSite() {
 		player_list = new ArrayList<Player>();
+		url = YAHOO_MAIN_URL;
+	}
+	
+	public YahooSite(String url) {
+		this.url = url;
 	}
 	
 	public ArrayList<Player> getRoster() {
-		this.connect(YAHOO_MAIN_URL);
+		this.connect(url);
 		this.parseRoster();
 		return player_list;
 	}
@@ -115,7 +125,7 @@ public class YahooSite extends WebSite {
 
 	@Override
 	DraftInfo getDraftInfo(String playerUrl) {
-		this.connect(playerUrl);
+		this.connect(url);
 		Element bio = doc.select(".bio").get(0);
 		String draft = bio.select(".draft dd").html();
 
