@@ -79,7 +79,10 @@ public class Connection {
 			return;
 		}
 		
-		/* TODO: error check the parsing of the string */
+		/* TODO: error check the parsing of the string
+		 *       also figure out how to select the right preference (mlb or nfl?)
+		 *        -have a custom preference tied to the sport (have a class in charge of it), then
+		 *         have the preference values be the string keys to the url  */
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		String idArr[] = prefs.getString("website_pref", null).split(",");
 		int id = Integer.parseInt(idArr[0]);
