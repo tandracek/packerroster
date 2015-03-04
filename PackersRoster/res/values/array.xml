@@ -15,4 +15,12 @@
     <string-array name="websites_mlb_id">
         <item >1,http://sports.yahoo.com/mlb/teams/mil/roster/</item>
     </string-array>
+    <string-array name="sport_pref">
+        <item >NFL</item>
+        <item >MLB</item>
+    </string-array>
+    <string-array name="sport_pref_key">
+        <item >website_pref</item>
+        <item >website_mlb_pref</item>
+    </string-array>
 </resources>

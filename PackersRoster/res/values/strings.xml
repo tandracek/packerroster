@@ -29,6 +29,8 @@
 	
 	<string name="undrafted">Undrafted</string>
 	<string name="dtl_college_displ">College: </string>
+	
+	<string name="sport_pref_title">Current Sport</string>
 	<string name="website_pref_title">NFL Website</string>
 	<string name="website_mlb_pref_title">MLB Website</string>
 	

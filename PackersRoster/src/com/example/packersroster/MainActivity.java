@@ -35,6 +35,8 @@ public class MainActivity extends Activity {
 	public ListView roster_view;
 	
 	public static String sport;
+	public static String sportPref;
+	public static int sportId;
 	
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
@@ -47,8 +49,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
-		if (MainActivity.sport == null) {
-			MainActivity.sport = "NFL";
+		if (MainActivity.sportPref == null) {
+			MainActivity.sportPref = PreferenceManager.getDefaultSharedPreferences(this).getString("sport_pref", "website_pref");
 		}
 		
 		List<Player> player_list = new Connection(this).getRoster(false);
@@ -135,6 +137,10 @@ public class MainActivity extends Activity {
 	
 	protected void onDestroy() {
 		super.onDestroy();
+	}
+	
+	public void SwitchSports () {
+		
 	}
 	
 	private class RosterDownload extends AsyncTask<String, String, List<Player>> {
