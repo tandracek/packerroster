@@ -1,23 +1,44 @@
 package com.example.packersroster;
 
-public class Player implements Comparable<Player>{
+import com.activeandroid.Model;
+import com.activeandroid.annotation.*;
+
+@Table(name="Player")
+public class Player extends Model implements Comparable<Player>{
 	public static String sortBy;
 	public int id = 0;
 	
 	public String sortedValue;
+	@Column(name="sport")
+	public String sport;
+	@Column(name="name")
 	public String name;
+	@Column(name="position")
 	public String position;
+	@Column(name="number")
 	public String number;
+	@Column(name="link")
 	public String link;
+	@Column(name="draftStr")
 	public String draftStr;
+	@Column(name="salary")
 	public String salary;
+	@Column(name="experience")
 	public String experience;
+	@Column(name="age")
 	public String age;
+	@Column(name="ht_wt")
 	public String ht_wt;
+	@Column(name="college")
 	public String college;
+	@Column(name="group_field")
 	public String group;
-	
+	@Column(name="DraftInfo")
 	public DraftInfo draftInfo;
+	
+	public Player() {
+		super();
+	}
 	
 	public Player(String name, int id) {
 		this.name = name;
@@ -30,69 +51,6 @@ public class Player implements Comparable<Player>{
 		this.number = number;
 	}
 	
-	public void setSortValue(String value) {
-		this.sortedValue = value;
-	}
-	
-	public String getSortedValue() {
-		return sortedValue;
-	}
-	
-	public void setDraftStr(String draftStr) {
-		this.draftStr = draftStr;
-	}
-	
-	public String getDraftDisplay() {
-		if(this.draftStr.length() > 0) this.draftInfo = new DraftInfo(draftStr);
-		else return draftStr;
-		
-		return draftInfo.getDraftDisplay();
-	}
-	
-	public void initDraftInfo() {
-		if(draftStr.length() > 0) this.draftInfo = new DraftInfo(this.draftStr);
-	}
-	
-	public void setDraftInfo(String draft) {
-		this.draftInfo = new DraftInfo(draft);
-	}
-	
-	public String getDraftYear() {
-		return draftInfo.year;
-	}
-	
-	public String getDraftPick() {
-		return draftInfo.pick;
-	}
-	
-	public String getDraftTeam() {
-		return draftInfo.team;
-	}
-	
-	public String getDraftRound() {
-		return draftInfo.round;
-	}
-	
-	public String getLink() {
-		return link;
-	}
-	
-	public void setLink(String link) {
-		this.link = link;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public String getPosition() {
-		return position;
-	}
-	
-	public String getNumber() {
-		return number;
-	}
-	
 	public int getNumAsInt() {
 		int c_number;
 		try {
@@ -101,10 +59,6 @@ public class Player implements Comparable<Player>{
 			return 0;
 		}
 		return c_number;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
 	}
 
 	@Override

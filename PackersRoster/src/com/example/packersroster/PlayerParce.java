@@ -3,6 +3,7 @@ package com.example.packersroster;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/* TODO: Look more into this parcel thing for potentially sending through activities */
 public class PlayerParce implements Parcelable {
 	private String name;
 	private String position;
@@ -19,15 +20,6 @@ public class PlayerParce implements Parcelable {
 
 	public void setDraftStr(String draftStr) {
 		this.draftStr = draftStr;
-	}
-
-	public void initDraftInfo() {
-		if (draftStr.length() > 0)
-			this.draftInfo = new DraftInfo(this.draftStr);
-	}
-
-	public void setDraftInfo(String draft) {
-		this.draftInfo = new DraftInfo(draft);
 	}
 
 	public String getDraftYear() {

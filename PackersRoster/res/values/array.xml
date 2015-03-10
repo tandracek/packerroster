@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="websites">
+        <item >Yahoo.com</item>
+        <item >Nfl.com</item>
+    </string-array>
+    <string-array name="websites_id">
+        <item >1,http://sports.yahoo.com/nfl/teams/gnb/roster/</item>
+        <item >2,http://www.nfl.com/players/search?category=team&amp;filter=1800&amp;playerType=current</item>
+    </string-array>
+    
+    <string-array name="websites_mlb">
+        <item >Yahoo.com</item>
+    </string-array>
+    <string-array name="websites_mlb_id">
+        <item >1,http://sports.yahoo.com/mlb/teams/mil/roster/</item>
+    </string-array>
+    
+    <string-array name="websites_nba">
+        <item >Yahoo.com</item>
+    </string-array>
+    <string-array name="websites_nba_id">
+        <item >1,http://sports.yahoo.com/nba/teams/mil/roster/</item>
+    </string-array>
+    
+    <string-array name="sport_pref">
+        <item >NFL</item>
+        <item >MLB</item>
+        <item >NBA</item>
+    </string-array>
+    <string-array name="sport_pref_key">
+        <item >website_pref</item>
+        <item >website_mlb_pref</item>
+        <item >website_nba_pref</item>
+    </string-array>
+</resources>

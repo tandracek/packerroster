@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="website_pref"
+        android:title="@string/website_pref_title"
+        android:entries="@array/websites"
+        android:entryValues="@array/websites_id"
+        android:defaultValue="@string/website_nfl_pref_default" />
+    
+   <ListPreference
+        android:key="website_mlb_pref"
+        android:title="@string/website_mlb_pref_title"
+        android:entries="@array/websites_mlb"
+        android:entryValues="@array/websites_mlb_id"
+        android:defaultValue="@string/website_mlb_pref_default" />
+   
+   <ListPreference
+        android:key="website_nba_pref"
+        android:title="@string/website_mlb_pref_title"
+        android:entries="@array/websites_nba"
+        android:entryValues="@array/websites_nba_id"
+        android:defaultValue="@string/website_nba_pref_default" />
+</PreferenceScreen>

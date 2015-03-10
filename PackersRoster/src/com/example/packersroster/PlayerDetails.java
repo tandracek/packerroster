@@ -1,72 +1,85 @@
 package com.example.packersroster;
 
+import com.activeandroid.query.Select;
+
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class PlayerDetails extends Activity {
 	private Player currPlayer;
-	private ConnHandler connection;
-	private DataHandler dataHandler;
-	private TextView draftView;
+	private ActionBar aBar;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_layout);
         
+        aBar = getActionBar();
+        aBar.setDisplayHomeAsUpEnabled(true);
+        
         Intent intent = getIntent();
-        int playerID = intent.getIntExtra(MainActivity.PLAYER_EXTRA, 0);
-        
-        connection = new ConnHandler(this, this);
-        connection.connect_init("details", "details");
-        connection.setPid(playerID);
-        
-        dataHandler = new DataHandler(this);
-   
-        DataHandler dataHand = new DataHandler(this);
-        currPlayer = dataHand.getPlayer(playerID);
+        Long playerId = intent.getLongExtra(MainActivity.PLAYER_EXTRA, 0);
+        currPlayer = Connection.getPlayerById(playerId);
     
-        TextView nameHeader = (TextView) findViewById(R.id.nameView);
-        nameHeader.setText(currPlayer.getName());
+        this.buildTextView(R.id.nameView, currPlayer.name);
+        this.buildTextView(R.id.numberView, "   - #" + currPlayer.number);
+        this.buildTextView(R.id.posView, currPlayer.position);
+        this.buildTextView(R.id.ageView, "Age: " + currPlayer.age);
+        this.buildTextView(R.id.expView, "Exp: " + currPlayer.experience);
+        this.buildTextView(R.id.collegeView, "College: " + currPlayer.college);
+        this.buildTextView(R.id.salaryView, "Salary: " + currPlayer.salary);
         
-        TextView numberHeader = (TextView) findViewById(R.id.numberView);
-        numberHeader.setText("   - #" + currPlayer.getNumber());
-        
-        TextView posHeader = (TextView) findViewById(R.id.posView);
-        posHeader.setText(currPlayer.getPosition());
-        
-        TextView ageHeader = (TextView) findViewById(R.id.ageView);
-        ageHeader.setText("Age: " + currPlayer.age);
-        
-        TextView expHeader = (TextView) findViewById(R.id.expView);
-        expHeader.setText("Exp: " + currPlayer.experience);
-        
-        TextView collegeHeader = (TextView) findViewById(R.id.collegeView);
-        collegeHeader.setText("College: " + currPlayer.college);
-        
-        draftView = (TextView) findViewById(R.id.draftInfoView);
-        draftView.setText(currPlayer.draftStr);
-        
-        TextView salaryHeader = (TextView) findViewById(R.id.salaryView);
-        salaryHeader.setText("Salary: " + currPlayer.salary);
+        DraftInfo d = new Connection(this).getDraftStr(false, currPlayer);
+        this.buildDraftDetailsView(d);
         
         Button detailsBtn = (Button) findViewById(R.id.detailsBtn);
         detailsBtn.setOnClickListener(new View.OnClickListener(){
         	public void onClick(View v) {
-        		connection.execute(currPlayer.link);
+        		new GetDetails().execute(new String[] {currPlayer.link});
         	}
         });
     }
-	public void buildAdapter() {
-		String draftStr = dataHandler.getValue("draft", "player_details", currPlayer.id);
-		DraftInfo dInfo = new DraftInfo(draftStr);
+	
+	private void buildDraftDetailsView(DraftInfo dInfo) {
+		if(dInfo == null) return;
 		
-		draftView.setText(dInfo.getDraftDisplay());
+		String dText;
+		if (dInfo.isUndrafted) {
+			dText = this.getResources().getString(R.string.undrafted);
+		}
+		else dText = "Round: " + dInfo.round + " Pick: " + dInfo.pick + " Year: " + dInfo.year + " by the " + dInfo.team;
+		this.buildTextView(R.id.draftInfoView, dText);
 	}
 
+	private void buildTextView(int viewId, String text) {
+		TextView view = (TextView) findViewById(viewId);
+		view.setText(text);
+	}
+	
+	private class GetDetails extends AsyncTask<String, String, DraftInfo> {
+
+		ProgressDialog pDialog;
+		protected void onPreExecute() {
+			pDialog = new ProgressDialog(PlayerDetails.this, ProgressDialog.STYLE_HORIZONTAL);
+			pDialog = ProgressDialog.show(PlayerDetails.this, "Getting Details", "Retrieving details...");		
+		}
+		
+		@Override
+		protected DraftInfo doInBackground(String... params) {
+			return new Connection(PlayerDetails.this).getDraftStr(true, currPlayer);
+		}
+		
+		@Override
+	    protected void onPostExecute(DraftInfo result) {
+			buildDraftDetailsView(result);
+			pDialog.dismiss();
+	    }
+	}
 }

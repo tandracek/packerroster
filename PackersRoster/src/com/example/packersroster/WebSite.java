@@ -1,9 +1,10 @@
 package com.example.packersroster;
 
+import java.util.ArrayList;
 
-public interface WebSite {
 
-	boolean connect(String URL);
-	boolean getInitialData();
-	boolean getDetails();
+public abstract class WebSite {
+	
+	abstract ArrayList<Player> getRoster();
+	abstract DraftInfo getDraftInfo(String playerUrl);
 }
