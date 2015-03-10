@@ -35,36 +35,99 @@
               </menu>
     </item>
         
+    <item android:id="@+id/menu_all"
+              android:title="@string/menu_all" />
     
     <item android:id="@+id/group_position"
     	   android:title="@string/menu_position">
     	   <menu>
     	<group android:id="@+id/position_group">
-    	<item android:id="@+id/menu_all"
-              android:title="@string/menu_all" />
         <item android:id="@+id/menu_qb"
-              android:title="@string/menu_qb" />
+              android:title="@string/menu_qb"
+              android:titleCondensed="QB" />
         <item android:id="@+id/menu_rb"
-              android:title="@string/menu_rb" />
+              android:title="@string/menu_rb"
+              android:titleCondensed="RB" />
         <item android:id="@+id/menu_wr"
-              android:title="@string/menu_wr" />
+              android:title="@string/menu_wr"
+              android:titleCondensed="WR" />
         <item android:id="@+id/menu_te"
-              android:title="@string/menu_te" />
+              android:title="@string/menu_te"
+              android:titleCondensed="TE" />
         <item android:id="@+id/menu_ol"
-              android:title="@string/menu_ol" />
+              android:title="@string/menu_ol"
+              android:titleCondensed="OL" />
         <item android:id="@+id/menu_dl"
-              android:title="@string/menu_dl" />
+              android:title="@string/menu_dl"
+              android:titleCondensed="DL" />
         <item android:id="@+id/menu_lb"
-              android:title="@string/menu_lb" />
+              android:title="@string/menu_lb"
+              android:titleCondensed="LB" />
         <item android:id="@+id/menu_cb"
-              android:title="@string/menu_cb" />
+              android:title="@string/menu_cb"
+              android:titleCondensed="CB" />
         <item android:id="@+id/menu_s"
-              android:title="@string/menu_s" />
+              android:title="@string/menu_s"
+              android:titleCondensed="S" />
         <item android:id="@+id/menu_sp"
-              android:title="@string/menu_sp" />
+              android:title="@string/menu_sp"
+              android:titleCondensed="SP" />
         </group>
               </menu>
     </item>
     
-
+     <item android:id="@+id/group_mlb_position"
+    	   android:title="@string/menu_position">
+    	   <menu>
+    	<group android:id="@+id/position_mlb_group">
+        <item android:id="@+id/menu_mlb_sp"
+              android:title="@string/menu_mlb_sp"
+              android:titleCondensed="P" />
+        <item android:id="@+id/menu_mlb_c"
+              android:title="@string/menu_mlb_c"
+              android:titleCondensed="C" />
+        <item android:id="@+id/menu_mlb_1b"
+              android:title="@string/menu_mlb_1b"
+              android:titleCondensed="1B" />
+        <item android:id="@+id/menu_mlb_2b"
+              android:title="@string/menu_mlb_2b"
+              android:titleCondensed="2B" />
+        <item android:id="@+id/menu_mlb_3b"
+              android:title="@string/menu_mlb_3b"
+              android:titleCondensed="3B" />
+        <item android:id="@+id/menu_mlb_cf"
+              android:title="@string/menu_mlb_cf"
+              android:titleCondensed="CF" />
+        <item android:id="@+id/menu__mlb_lf"
+              android:title="@string/menu_mlb_lf"
+              android:titleCondensed="LF" />
+        <item android:id="@+id/menu_mlb_rf"
+              android:title="@string/menu_mlb_rf"
+              android:titleCondensed="RF" />
+        </group>
+              </menu>
+    </item>
+    
+    <item android:id="@+id/group_nba_position"
+    	   android:title="@string/menu_position">
+    	   <menu>
+    	<group android:id="@+id/position_nba_group">
+        <item android:id="@+id/menu_nba_c"
+              android:title="@string/menu_nba_c"
+              android:titleCondensed="C" />
+        <item android:id="@+id/menu_nba_pf"
+              android:title="@string/menu_nba_pf"
+              android:titleCondensed="PF" />
+        <item android:id="@+id/menu_nba_sf"
+              android:title="@string/menu_nba_sf"
+              android:titleCondensed="SF" />
+        <item android:id="@+id/menu_nba_sg"
+              android:title="@string/menu_nba_sg"
+              android:titleCondensed="SG" />
+        <item android:id="@+id/menu_nba_pg"
+              android:title="@string/menu_nba_pg"
+              android:titleCondensed="PG" />
+        </group>
+              </menu>
+    </item>
 </menu>

@@ -31,6 +31,22 @@
 	<string name="menu_cb">CB</string>
 	<string name="menu_s">S</string>
 	<string name="menu_sp">Special</string>
+	
+	<string name="menu_mlb_sp">Pitcher</string>
+	<string name="menu_mlb_c">Catcher</string>
+	<string name="menu_mlb_1b">1st Base</string>
+	<string name="menu_mlb_2b">2nd Base</string>
+	<string name="menu_mlb_3b">3rd Base</string>
+	<string name="menu_mlb_cf">Center</string>
+	<string name="menu_mlb_lf">Left</string>
+	<string name="menu_mlb_rf">Right</string>
+	
+	<string name="menu_nba_c">Center</string>
+	<string name="menu_nba_pf">Power Forward</string>
+	<string name="menu_nba_sf">Small Forward</string>
+	<string name="menu_nba_sg">Shooting Guard</string>
+	<string name="menu_nba_pg">Point Guard</string>
+	
 	<string name="switch_sports">Switch sports</string>
 	
 	<string name="undrafted">Undrafted</string>

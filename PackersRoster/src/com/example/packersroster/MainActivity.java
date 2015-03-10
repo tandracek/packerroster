@@ -51,12 +51,14 @@ public class MainActivity extends Activity implements
 	public static String sportPref;
 	public static int sportId;
 	public static SportStyles activeSport;
+	public static List<String> positions;
 
 	private ActionBar aBar;
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
 
-	//TODO: set sorting positions for sports, maybe just put them all in groupings in menu
+	//TODO: -set sorting positions for sports, maybe just put them all in groupings in menu
+	//      -change layout so header columns sit at top that user can click on to sort, can ultimately get rid of sorting/grouping in settings
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +153,8 @@ public class MainActivity extends Activity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getGroupId() == R.id.position_group) {
-			roster_adapter.setSortPos(item.getTitle().toString());
+			//roster_adapter.setSortPos(item.getTitle().toString());
+			roster_adapter.getFilter().filter(item.getTitle().toString());
 			roster_adapter.notifyDataSetChanged();
 			return true;
 		}
@@ -195,7 +198,7 @@ public class MainActivity extends Activity implements
 	}
 
 	public void SwitchSports() {
-		// TODO: check that they actually selected a new sport
+		// TODO: check that they actually selected a new sport, also figure out if setting styles should be done here and not in async
 
 		new RosterDownload().execute(new Boolean[] { false });
 	}
@@ -225,6 +228,7 @@ public class MainActivity extends Activity implements
 			if (params.length > 0) {
 				goOnline = params[0].booleanValue();
 			}
+			MainActivity.positions = Connection.getPositions(MainActivity.activeSport.sport);
 			return new Connection(MainActivity.this).getRoster(goOnline);
 		}
 

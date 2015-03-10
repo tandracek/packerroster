@@ -1,5 +1,6 @@
 package com.example.packersroster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
@@ -32,7 +33,6 @@ public class Connection {
 	
 	public List<Player> getRoster(boolean goOnline) {
 		if (!goOnline) { 
-			//TODO: select based on sport
 			return new Select().from(Player.class).where("sport=?", MainActivity.activeSport.sport).execute();
 		}
 		
@@ -57,6 +57,20 @@ public class Connection {
 	
 	public static Player getPlayerById(Long playerId) {
 		return Model.load(Player.class, playerId);
+	}
+	
+	public static List<Player> filterPlayers(String sport, String filter) {
+		return new Select().from(Player.class).where("sport=?", sport).and("position=?", filter).execute();
+	}
+	
+	//TODO: test this
+	public static List<String> getPositions(String sport) {
+		List<String> pos = new ArrayList<String>();
+		List<Player> players = new Select(new String[]{"position"}).distinct().from(Player.class).execute();
+		for(Player p : players) {
+			pos.add(p.sport);
+		}
+		return pos;
 	}
 	
 	public DraftInfo getDraftStr(boolean goOnline, Player player) {

@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
-public class RosterAdapter extends ArrayAdapter<Player> {
+public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 
 	static class ViewHolder {
 		TextView textView1;
@@ -129,4 +131,29 @@ public class RosterAdapter extends ArrayAdapter<Player> {
 		return convertView;
 	}
 
+	@Override
+    public Filter getFilter() {
+		
+		return new RosterFilter();
+	}
+	
+	private class RosterFilter extends Filter {
+
+		@Override
+		protected FilterResults performFiltering(CharSequence arg0) {
+			FilterResults results = new FilterResults();			
+			List<Player> players = Connection.filterPlayers(MainActivity.activeSport.sport, arg0.toString());
+			
+			results.count = players.size();
+			results.values = players;
+			return results;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected void publishResults(CharSequence arg0, FilterResults arg1) {
+			roster_list = (List<Player>)arg1.values;
+		}
+		
+	}
 }
