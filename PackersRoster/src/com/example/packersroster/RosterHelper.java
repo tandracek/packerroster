@@ -191,10 +191,10 @@ public class RosterHelper extends SQLiteOpenHelper{
 		
 		ContentValues values = new ContentValues();
 		values.put(id_field, id);
-		values.put(name_field, player.getName());
-		values.put(num_field, player.getNumber());
-		values.put(pos_field, player.getPosition());
-		values.put(link_field, player.getLink());
+		values.put(name_field, player.name);
+		values.put(num_field, player.number);
+		values.put(pos_field, player.position);
+		values.put(link_field, player.link);
 		values.put(age_field, player.age);
 		values.put(exp_field, player.experience);
 		values.put(salary_field, player.salary);
@@ -293,7 +293,7 @@ public class RosterHelper extends SQLiteOpenHelper{
 		while(cursor.moveToNext()) {
 			Player temp_pl = new Player(cursor.getString(1), cursor.getString(3), cursor.getString(2));
 			temp_pl.id = cursor.getInt(0);
-			temp_pl.setLink(cursor.getString(4));
+			temp_pl.link = cursor.getString(4);
 			temp_pl.group = cursor.getString(5);
 			player_list.add(temp_pl);
 		}
@@ -321,7 +321,7 @@ public class RosterHelper extends SQLiteOpenHelper{
 		Cursor cursor = db.query(player_table, new String[] {id_field, name_field, value}, null, null, null, null, value + " " + filter);
 		while(cursor.moveToNext()) {
 			Player temp_pl = new Player(cursor.getString(0), Integer.parseInt(cursor.getString(1)));
-			temp_pl.setSortValue(cursor.getString(2));
+			temp_pl.sortedValue = cursor.getString(2);
 			player_list.add(temp_pl);
 		}
 		
