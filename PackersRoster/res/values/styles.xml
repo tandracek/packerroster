@@ -16,5 +16,11 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    <style name="mlb_style">
+        <item name="android:background">#12469B</item>
+    </style>
+    <style name="nfl_style">
+        <item name="android:background">#224728</item>
+    </style>
 
 </resources>

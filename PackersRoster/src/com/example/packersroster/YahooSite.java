@@ -29,6 +29,7 @@ public class YahooSite extends WebSite {
 	}
 	
 	public YahooSite(String url) {
+		player_list = new ArrayList<Player>();
 		this.url = url;
 	}
 	

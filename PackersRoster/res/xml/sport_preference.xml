@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <ListPreference
+		android:title="@string/sport_pref_title"
+		android:key="sport_pref" 
+		android:selectable="false"
+		android:enabled="false"
+		android:entries="@array/sport_pref"
+        android:entryValues="@array/sport_pref_key"/>
+</PreferenceScreen>

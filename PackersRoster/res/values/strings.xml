@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Packers Roster</string>
+    <string name="app_name">WI Sports Roster</string>
+    <string name="packer_roster">Packers Roster</string>
+    <string name="brewer_roster">Brewers Roster</string>
+    <string name="bucks_roster">Bucks Roster</string>
+    
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="roster_label">Roster</string>
@@ -11,6 +15,7 @@
 	<string name="details_btn">Get details</string>
 	<string name="NFL">NFL</string>
 	<string name="MLB">MLB</string>
+	<string name="NBA">NBA</string>
 	<string name="menu_position">Group by Position ></string>
 	<string name="menu_sort">Sort by></string>
 	<string name="menu_number">Number</string>
@@ -26,6 +31,7 @@
 	<string name="menu_cb">CB</string>
 	<string name="menu_s">S</string>
 	<string name="menu_sp">Special</string>
+	<string name="switch_sports">Switch sports</string>
 	
 	<string name="undrafted">Undrafted</string>
 	<string name="dtl_college_displ">College: </string>
@@ -33,6 +39,7 @@
 	<string name="sport_pref_title">Current Sport</string>
 	<string name="website_pref_title">NFL Website</string>
 	<string name="website_mlb_pref_title">MLB Website</string>
+	<string name="website_nba_pref_title">NBA Website</string>
 	
 	<string name="settings_title">Settings</string>
 	
@@ -41,4 +48,8 @@
 	
 	<string name="website_nfl_pref_default">1,http://sports.yahoo.com/nfl/teams/gnb/roster/</string>
 	<string name="website_mlb_pref_default">1,http://sports.yahoo.com/mlb/teams/mil/roster/</string>
+	<string name="website_nba_pref_default">1,http://sports.yahoo.com/nba/teams/mil/roster/</string>
+	
+	<string name="nfl_color">#224728</string>
+	<string name="mlb_color">#12469B</string>
 </resources>

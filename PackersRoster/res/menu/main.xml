@@ -1,4 +1,11 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+      
+    <item android:id="@+id/action_switch"
+        android:icon="@drawable/ic_action_storage"
+        android:title="@string/switch_sports"
+        android:showAsAction="ifRoom" 
+        android:onClick="switchPopup" />
+    
 
     <item
         android:id="@+id/settings_id"

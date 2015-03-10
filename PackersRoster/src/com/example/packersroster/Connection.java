@@ -11,15 +11,20 @@ import com.activeandroid.query.Select;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 /*
  * The reason that would be for this intermediate class, instead of calling the site class directly, as this 
  *  would also handle all the database stuff.
  */
 public class Connection {
+	public static String sportsPref;
+	
 	private static int websiteId;
 	private static WebSite website;
 	private Context context;
+	
+	private final String TAG = "Connection";
 	public Connection(Context context) {
 		website = null;
 		this.context = context;
@@ -27,7 +32,8 @@ public class Connection {
 	
 	public List<Player> getRoster(boolean goOnline) {
 		if (!goOnline) { 
-			return new Select().from(Player.class).execute();
+			//TODO: select based on sport
+			return new Select().from(Player.class).where("sport=?", MainActivity.activeSport.sport).execute();
 		}
 		
 		this.deriveSite();
@@ -36,7 +42,7 @@ public class Connection {
 		roster = website.getRoster();
 		ActiveAndroid.beginTransaction();
 		try {
-			String sport = MainActivity.sport;
+			String sport = MainActivity.activeSport.sport;
 			for(Player p : roster) {
 				p.sport = sport;
 				p.save();
@@ -73,24 +79,17 @@ public class Connection {
 		return f.count();
 	}
 	
-	private void deriveSite() {
-		if (Connection.websiteId == 0) {
-			website = null;
-			return;
-		}
-		
-		/* TODO: error check the parsing of the string
-		 *       also figure out how to select the right preference (mlb or nfl?)
-		 *        -have a custom preference tied to the sport (have a class in charge of it), then
-		 *         have the preference values be the string keys to the url  */
+	private void deriveSite() {	
+		/* TODO: error check the parsing of the string */
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		String idArr[] = prefs.getString(MainActivity.sportPref, null).split(",");
+		
+		String sPref = prefs.getString(MainActivity.activeSport.sportPref, null);
+		Log.d(TAG, sPref);
+		String idArr[] = sPref.split(",");
+		
 		int id = Integer.parseInt(idArr[0]);
 		String url = idArr[1];
-		
-		if (Connection.websiteId == id) {
-			return;
-		}
+
 		Connection.websiteId = id;
 		switch(websiteId) {
 		case 1:
@@ -100,6 +99,7 @@ public class Connection {
 			website = new NflSite(url);
 			break;
 		default:
+			Log.d(TAG, "website id is not found");
 			website = null;
 		}		
 	}
