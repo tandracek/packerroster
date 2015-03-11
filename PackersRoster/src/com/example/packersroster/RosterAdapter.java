@@ -21,12 +21,31 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 		TextView textView1;
 	}
 	
+	private class playerNameCompare implements Comparator<Player> {
+		@Override
+		public int compare(Player arg0, Player arg1) {
+			return arg0.name.compareTo(arg0.name);
+		}
+	}
+	
+	private class playerNumCompare implements Comparator<Player> {
+		@Override
+		public int compare(Player lhs, Player rhs) {
+			int comp = lhs.getNumAsInt();
+			int curr = rhs.getNumAsInt();
+			if(comp < curr) return -1;
+			if(comp > curr) return 1;
+			else return 0;
+		}
+	}
+	
 	private List<Player> roster_list;
 	private List<Player> hidden_list;
 	private Context context;
 	private String sortPos;
 	private boolean useHidden;
 	private int layout;
+	private boolean[] sortCols;
 
 	public RosterAdapter(Context context, int resource,
 			List<Player> roster_list) {
@@ -89,6 +108,18 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 
 		if(order.equals("asc")) Collections.sort(toSort);
 		else Collections.reverse(toSort);
+	}
+	
+	//TODO: test this, and if works can remove the implements comparator for the player class
+	public void sortRoster(int col) {
+		switch(col) {
+		case R.id.header_number:
+			Collections.sort(roster_list, new playerNumCompare());
+			break;
+		case R.id.header_name:
+			Collections.sort(roster_list, new playerNameCompare());
+			break;
+		}
 	}
 	
 	@Override
