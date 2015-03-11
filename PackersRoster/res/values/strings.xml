@@ -59,6 +59,8 @@
 	
 	<string name="settings_title">Settings</string>
 	
+	<string name="header_number">#</string>
+	<string name="header_name">Name</string>
 	
 	<string name="test">Test</string>
 	
