@@ -55,6 +55,9 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 		layout = resource;
 		this.hidden_list = new ArrayList<Player>();
 		this.useHidden = false;
+		
+		//TODO: make this size determined by constructor arg
+		sortCols = new boolean[]{false, false};
 	}
 
 	public Player getItem(int index) {
@@ -112,14 +115,24 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 	
 	//TODO: test this, and if works can remove the implements comparator for the player class
 	public void sortRoster(int col) {
+		Comparator<Player> comp = null;
 		switch(col) {
 		case R.id.header_number:
-			Collections.sort(roster_list, new playerNumCompare());
+			comp = new playerNumCompare();
 			break;
 		case R.id.header_name:
-			Collections.sort(roster_list, new playerNameCompare());
+			comp = new playerNameCompare();
 			break;
 		}
+		
+		if(!sortCols[col]) {
+			Collections.sort(roster_list, comp);
+			
+			for(int i = 0; i < sortCols.length; i++) {
+				if(i != col) sortCols[i] = false;
+			}
+		}
+		else Collections.reverse(roster_list);
 	}
 	
 	@Override
