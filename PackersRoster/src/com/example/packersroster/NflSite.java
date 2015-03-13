@@ -27,12 +27,10 @@ public class NflSite extends WebSite{
 	
 	@Override
 	public ArrayList<Player> getRoster() {
-		// TODO Auto-generated method stub
 		Document nfl_com_doc = null;
 		try {
 			nfl_com_doc = Jsoup.connect(NFL_MAIN_URL).get();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -51,7 +49,6 @@ public class NflSite extends WebSite{
 
 	@Override
 	DraftInfo getDraftInfo(String playerUrl) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

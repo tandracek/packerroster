@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -38,9 +39,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+// TODO: add an icon in the action bar that groups by position, it builds the PosSortDialog
 public class MainActivity extends Activity implements
-		PopupMenu.OnMenuItemClickListener {
+		PopupMenu.OnMenuItemClickListener, PosSortDialog.PosSortInterface {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
 	public DataHandler roster_handler;
 	public Context main_context;
@@ -56,10 +57,8 @@ public class MainActivity extends Activity implements
 	private ActionBar aBar;
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
+	private boolean switched;
 
-	//TODO: -set sorting positions for sports, maybe just put them all in groupings in menu
-	//      -change layout so header columns sit at top that user can click on to sort, can ultimately get rid of sorting/grouping in settings
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,13 +72,14 @@ public class MainActivity extends Activity implements
 		if (MainActivity.activeSport == null) {
 			MainActivity.activeSport = SportStyles.NFL;
 			this.setActionBarStyle();
+			switched = true;
 		}
 
 		List<Player> player_list = new Connection(this).getRoster(false);
 
 		roster_view = (ListView) findViewById(R.id.listView1);
 		roster_adapter = new RosterAdapter(this, R.layout.roster_list,
-				player_list);
+				player_list, 2);
 		roster_view.setAdapter(roster_adapter);
 
 		helpText = (TextView) findViewById(R.id.blankText);
@@ -113,6 +113,11 @@ public class MainActivity extends Activity implements
 			}
 		});
 	}
+	
+	public void posPopup(MenuItem item) {
+		DialogFragment popup = new PosSortDialog(MainActivity.positions);
+		popup.show(getFragmentManager(), "posWin");
+	}
 
 	public void switchPopup(MenuItem item) {
 		View v = findViewById(R.id.action_switch);
@@ -122,21 +127,33 @@ public class MainActivity extends Activity implements
 		popup.setOnMenuItemClickListener(this);
 		popup.show();
 	}
+	
+	//TODO: test this, then can get rid of all the menu stuff related to positions
+	@Override
+	public void onPosClickListener(CharSequence position) {
+		roster_adapter.getFilter().filter(position);
+	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.nfl_switch:
-			MainActivity.activeSport = SportStyles.NFL;
-			this.SwitchSports();
+			if(!MainActivity.activeSport.sport.equals(SportStyles.NFL.sport)) {
+				MainActivity.activeSport = SportStyles.NFL;
+				this.SwitchSports();
+			}
 			return true;
 		case R.id.mlb_switch:
-			MainActivity.activeSport = SportStyles.MLB;
-			this.SwitchSports();
+			if(!MainActivity.activeSport.sport.equals(SportStyles.MLB.sport)) {
+				MainActivity.activeSport = SportStyles.MLB;
+				this.SwitchSports();
+			}
 			return true;
 		case R.id.nba_switch:
-			MainActivity.activeSport = SportStyles.NBA;
-			this.SwitchSports();
+			if(!MainActivity.activeSport.sport.equals(SportStyles.NBA.sport)) {
+				MainActivity.activeSport = SportStyles.NBA;
+				this.SwitchSports();
+			}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -248,5 +265,6 @@ public class MainActivity extends Activity implements
 		}
 
 	}
+
 
 }

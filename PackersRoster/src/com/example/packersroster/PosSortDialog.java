@@ -16,7 +16,7 @@ public class PosSortDialog extends DialogFragment {
 	PosSortInterface listener;
 
 	public interface PosSortInterface {
-		public void onPosClickListener(String position);
+		public void onPosClickListener(CharSequence position);
 	}
 	
 	PosSortDialog(List<String> pos) {
@@ -44,9 +44,9 @@ public class PosSortDialog extends DialogFragment {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						if(which != selected) {
-							//TODO: dismiss and do actions
 							selected = which;
-							listener.onPosClickListener(pos[which].toString());
+							listener.onPosClickListener(pos[which]);
+							dismiss();
 						}
 					}
 				});

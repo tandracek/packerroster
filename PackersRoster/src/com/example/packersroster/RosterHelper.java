@@ -123,7 +123,6 @@ public class RosterHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
-		// TODO Auto-generated method stub
 		String drop_player = "DROP TABLE IF EXISTS " + player_table;
 		String drop_details = "DROP TABLE IF EXISTS " + details_table;
 		String drop_pass_stats = "DROP TABLE IF EXISTS " + pass_stats;

@@ -48,7 +48,7 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 	private boolean[] sortCols;
 
 	public RosterAdapter(Context context, int resource,
-			List<Player> roster_list) {
+			List<Player> roster_list, int cols) {
 		super(context, resource, roster_list);
 		this.roster_list = roster_list;
 		this.context = context;
@@ -56,8 +56,7 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 		this.hidden_list = new ArrayList<Player>();
 		this.useHidden = false;
 		
-		//TODO: make this size determined by constructor arg
-		sortCols = new boolean[]{false, false};
+		sortCols = new boolean[cols];
 	}
 
 	public Player getItem(int index) {
