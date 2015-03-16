@@ -122,7 +122,6 @@ public class MainActivity extends Activity implements
 	}
 
 	public void switchPopup(MenuItem item) {
-		//TODO: have an 'all' selection to restore full roster
 		View v = findViewById(R.id.action_switch);
 		PopupMenu popup = new PopupMenu(this, v);
 		MenuInflater inflater = popup.getMenuInflater();

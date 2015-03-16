@@ -66,7 +66,7 @@
 	
 	<string name="website_nfl_pref_default">1,http://sports.yahoo.com/nfl/teams/gnb/roster/</string>
 	<string name="website_mlb_pref_default">1,http://sports.yahoo.com/mlb/teams/mil/roster/</string>
-	<string name="website_nba_pref_default">1,http://sports.yahoo.com/nba/teams/mil/roster/</string>
+	<string name="website_nba_pref_default">3,http://espn.go.com/nba/team/roster/_/name/mil/milwaukee-bucks</string>
 	
 	<string name="nfl_color">#224728</string>
 	<string name="mlb_color">#12469B</string>

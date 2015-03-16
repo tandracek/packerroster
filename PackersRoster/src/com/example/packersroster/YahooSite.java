@@ -16,28 +16,20 @@ import android.util.Log;
  * TODO: move the connection method to super website class, put document and list in there as well
  */
 public class YahooSite extends WebSite {
-	public String url;
-	public String sport;
-	
-	private ArrayList<Player> player_list;
-	private Document doc;
-	
-	private final String YAHOO_MAIN_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
+	private final static String YAHOO_MAIN_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
 	
 	public YahooSite() {
-		player_list = new ArrayList<Player>();
-		url = YAHOO_MAIN_URL;
+		super(YAHOO_MAIN_URL, "NFL");
 	}
 	
 	public YahooSite(String url, String sport) {
-		player_list = new ArrayList<Player>();
-		this.url = url;
-		this.sport = sport;
+		super(url, sport);
 	}
 	
 	public ArrayList<Player> getRoster() {
-		this.connect(url);
-		this.parseRoster();
+		if(this.connect(null)) {
+			this.parseRoster();
+		}
 		return player_list;
 	}
 	
@@ -47,19 +39,6 @@ public class YahooSite extends WebSite {
 			currLink = player_list.get(i).link;
 			player_list.get(i).draftInfo = this.getDraftInfo(currLink);
 		}
-	}
-	
-	private boolean connect(String URL) {
-		try {
-			doc = Jsoup
-					.connect(
-							URL).header("Accept-Encoding", "gzip, deflate").userAgent("Mozilla/5.0 (Windows NT 6.3; WOW64; rv:27.0) Gecko/20100101 Firefox/27.0")
-					.get();
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} 
 	}
 
 	private void parseRoster() {
@@ -116,7 +95,7 @@ public class YahooSite extends WebSite {
 
 	@Override
 	DraftInfo getDraftInfo(String playerUrl) {
-		this.connect(url);
+		this.connect(playerUrl);
 		Element bio = doc.select(".bio").get(0);
 		String draft = bio.select(".draft dd").html();
 

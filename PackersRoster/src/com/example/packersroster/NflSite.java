@@ -15,26 +15,21 @@ public class NflSite extends WebSite{
 	
 	private ArrayList<Player> player_list;
 	
-	private final String NFL_MAIN_URL = "http://www.nfl.com/players/search?category=team&filter=1800&playerType=current";
+	private final static String NFL_MAIN_URL = "http://www.nfl.com/players/search?category=team&filter=1800&playerType=current";
 	
 	public NflSite() {
-		player_list = new ArrayList<Player>();
+		super(NFL_MAIN_URL, "NFL");
 	}
 	
 	public NflSite(String url) {
-		this.url = url;
+		super(url, "NFL");
 	}
 	
 	@Override
 	public ArrayList<Player> getRoster() {
-		Document nfl_com_doc = null;
-		try {
-			nfl_com_doc = Jsoup.connect(NFL_MAIN_URL).get();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		if(!this.connect(null)) return player_list;
 		
-		Elements result_bloc = nfl_com_doc.select("#result");
+		Elements result_bloc = doc.select("#result");
 		result_bloc = result_bloc.select("tbody");
 		Element tempE = result_bloc.remove(0);
 		Elements playerRows = result_bloc.select("tr");

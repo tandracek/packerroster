@@ -18,9 +18,11 @@
     
     <string-array name="websites_nba">
         <item >Yahoo.com</item>
+        <item >Espn.com</item>
     </string-array>
     <string-array name="websites_nba_id">
         <item >1,http://sports.yahoo.com/nba/teams/mil/roster/</item>
+        <item >3,http://espn.go.com/nba/team/roster/_/name/mil/milwaukee-bucks</item>
     </string-array>
     
     <string-array name="sport_pref">
