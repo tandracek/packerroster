@@ -16,34 +16,46 @@
         android:layout_alignParentLeft="true"
         android:text="@string/test" />
 
-	<TextView
-		android:id="@+id/blankText"
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:text="@string/help_text" >
-	</TextView>
 	
 	<LinearLayout
+	    android:id="@+id/col_headers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        >
         <TextView android:id="@+id/header_number"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/header_number" />
+            android:textSize="20sp"
+            android:text="@string/header_number"
+            android:onClick="onHeaderClick"
+            android:clickable="true"
+            android:background="@drawable/header" />
         <TextView android:id="@+id/header_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/header_name" />
+            android:layout_weight="3"
+            android:textSize="20sp"
+            android:text="@string/header_name"
+            android:onClick="onHeaderClick"
+            android:clickable="true"
+            android:background="@drawable/header" />
     </LinearLayout>
+
+	<TextView
+		android:id="@+id/blankText"
+		android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:text="@string/help_text"
+        android:layout_below="@+id/col_headers" >
+	</TextView>
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/blankText" >
+        android:layout_below="@+id/col_headers" >
     </ListView>
 
 </RelativeLayout>

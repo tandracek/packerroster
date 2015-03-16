@@ -17,6 +17,7 @@ import android.util.Log;
  */
 public class YahooSite extends WebSite {
 	public String url;
+	public String sport;
 	
 	private ArrayList<Player> player_list;
 	private Document doc;
@@ -28,9 +29,10 @@ public class YahooSite extends WebSite {
 		url = YAHOO_MAIN_URL;
 	}
 	
-	public YahooSite(String url) {
+	public YahooSite(String url, String sport) {
 		player_list = new ArrayList<Player>();
 		this.url = url;
+		this.sport = sport;
 	}
 	
 	public ArrayList<Player> getRoster() {
@@ -64,7 +66,9 @@ public class YahooSite extends WebSite {
 		Elements details = doc.select("#mediasportsteamroster > .bd > .position-group");
 		if(details.size() == 0) return;
 				
+		String grouping;
 		for(int i = 0; i < details.size(); i++) {
+			grouping = details.get(i).select("h3").html();
 			Elements player_eles = details.get(i).select("tr");
 			for(int j = 1; j < player_eles.size(); j++) {
 				Element player = player_eles.get(j);
@@ -86,14 +90,13 @@ public class YahooSite extends WebSite {
 					if(k == 0) position = positions.get(k).html();
 					else position += ("\\" + positions.get(k).html());
 				}
-				String groupPos = getGrouping(position);
 				
 				Player tempPlayer = new Player(name, position, number);
 				tempPlayer.age = age;
 				tempPlayer.college = college;
 				tempPlayer.experience = experience;
 				tempPlayer.salary = salary;
-				tempPlayer.group = groupPos;
+				tempPlayer.group = grouping;
 				tempPlayer.position = position;
 				tempPlayer.link = "http://sports.yahoo.com" + link;
 				player_list.add(tempPlayer);
@@ -109,19 +112,6 @@ public class YahooSite extends WebSite {
 			return returnStr;
 		}
 		return name;
-	}
-	
-	public static String getGrouping(String pos) {
-		if(pos.contains("QB")) return "QB";
-		if(pos.contains("RB") || pos.contains("FB")) return "RB";
-		if(pos.contains("WR")) return "WR";
-		if(pos.contains("TE")) return "TE";
-		if(pos.contains("OT") || pos.contains("OG") || pos.equals("C")) return "OL";
-		if(pos.contains("NT") || pos.contains("DE")) return "DL";
-		if(pos.contains("LB")) return "LB";
-		if(pos.contains("CB")) return "CB";
-		if(pos.contains("FS") || pos.contains("SS")) return "S";
-		else return "SP";
 	}
 
 	@Override

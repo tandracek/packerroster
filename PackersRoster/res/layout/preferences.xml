@@ -17,7 +17,7 @@
    
    <ListPreference
         android:key="website_nba_pref"
-        android:title="@string/website_mlb_pref_title"
+        android:title="@string/website_nba_pref_title"
         android:entries="@array/websites_nba"
         android:entryValues="@array/websites_nba_id"
         android:defaultValue="@string/website_nba_pref_default" />

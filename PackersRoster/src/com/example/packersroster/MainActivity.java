@@ -31,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -71,6 +72,7 @@ public class MainActivity extends Activity implements
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 		if (MainActivity.activeSport == null) {
 			MainActivity.activeSport = SportStyles.NFL;
+			MainActivity.positions = Connection.getPositions(MainActivity.activeSport.sport);
 			this.setActionBarStyle();
 			switched = true;
 		}
@@ -120,6 +122,7 @@ public class MainActivity extends Activity implements
 	}
 
 	public void switchPopup(MenuItem item) {
+		//TODO: have an 'all' selection to restore full roster
 		View v = findViewById(R.id.action_switch);
 		PopupMenu popup = new PopupMenu(this, v);
 		MenuInflater inflater = popup.getMenuInflater();
@@ -128,7 +131,12 @@ public class MainActivity extends Activity implements
 		popup.show();
 	}
 	
-	//TODO: test this, then can get rid of all the menu stuff related to positions
+	public void onHeaderClick(View v) {
+		int index = ((ViewGroup) v.getParent()).indexOfChild(v);
+		roster_adapter.sortRoster(index, v.getId());
+		roster_adapter.notifyDataSetChanged();
+	}
+	
 	@Override
 	public void onPosClickListener(CharSequence position) {
 		roster_adapter.getFilter().filter(position);
@@ -169,34 +177,20 @@ public class MainActivity extends Activity implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getGroupId() == R.id.position_group) {
-			//roster_adapter.setSortPos(item.getTitle().toString());
-			roster_adapter.getFilter().filter(item.getTitle().toString());
-			roster_adapter.notifyDataSetChanged();
-			return true;
-		}
 		switch (item.getItemId()) {
 		case R.id.refresh_roster:
 			if (roster_adapter.getCount() > 0)
-				Connection.deleteRoster();
+				Connection.deleteRoster(MainActivity.activeSport.sport);
 			new RosterDownload().execute();
 			return true;
 		case R.id.delete_roster:
-			int rows = Connection.deleteRoster();
+			int rows = Connection.deleteRoster(MainActivity.activeSport.sport);
 			roster_adapter.clear();
 			roster_adapter.notifyDataSetChanged();
 			helpText.setVisibility(View.VISIBLE);
 			Toast toast = Toast.makeText(main_context, "Deleted " + rows
 					+ " rows", Toast.LENGTH_SHORT);
 			toast.show();
-			return true;
-		case R.id.menu_number:
-			roster_adapter.sort("number", "asc");
-			roster_adapter.notifyDataSetChanged();
-			return true;
-		case R.id.menu_name:
-			roster_adapter.sort("name", "asc");
-			roster_adapter.notifyDataSetChanged();
 			return true;
 		case R.id.settings_id:
 			startActivity(new Intent(main_context, SettingsActivity.class));
@@ -245,8 +239,9 @@ public class MainActivity extends Activity implements
 			if (params.length > 0) {
 				goOnline = params[0].booleanValue();
 			}
+			List<Player> newRoster = new Connection(MainActivity.this).getRoster(goOnline);
 			MainActivity.positions = Connection.getPositions(MainActivity.activeSport.sport);
-			return new Connection(MainActivity.this).getRoster(goOnline);
+			return newRoster;
 		}
 
 		@Override

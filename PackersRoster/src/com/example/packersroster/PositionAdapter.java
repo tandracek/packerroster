@@ -40,7 +40,7 @@ public class PositionAdapter extends ArrayAdapter<String>{
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(layout, parent, false);
-			textView = (TextView) convertView.findViewById(R.id.textView1);
+			textView = (TextView) convertView.findViewById(R.id.action_group);
 
 			viewHolder = new ViewHolder();
 			viewHolder.textView1 = textView;

@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">WI Sports Roster</string>
-    <string name="packer_roster">Packers Roster</string>
-    <string name="brewer_roster">Brewers Roster</string>
-    <string name="bucks_roster">Bucks Roster</string>
+    <string name="packer_roster">Packers</string>
+    <string name="brewer_roster">Brewers</string>
+    <string name="bucks_roster">Bucks</string>
     
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -16,7 +16,7 @@
 	<string name="NFL">NFL</string>
 	<string name="MLB">MLB</string>
 	<string name="NBA">NBA</string>
-	<string name="menu_position">Group by Position ></string>
+	<string name="menu_position">G></string>
 	<string name="menu_sort">Sort by></string>
 	<string name="menu_number">Number</string>
 	<string name="menu_name">Name</string>

@@ -1,10 +1,12 @@
 package com.example.packersroster;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
+import com.activeandroid.TableInfo;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
@@ -60,15 +62,22 @@ public class Connection {
 	}
 	
 	public static List<Player> filterPlayers(String sport, String filter) {
-		return new Select().from(Player.class).where("sport=?", sport).and("position=?", filter).execute();
+		List<Player> players;
+		if(filter.equals("All")) {
+			players = new Select().from(Player.class).where("sport=?", sport).execute();
+		} else {
+			players = new Select().from(Player.class).where("sport=?", sport).and("group_field=?", filter).execute();
+		}
+		return players;
 	}
 	
-	//TODO: test this
-	public static List<String> getPositions(String sport) {
+	public static List<String> getPositions(String sport) {		
 		List<String> pos = new ArrayList<String>();
-		List<Player> players = new Select(new String[]{"position"}).distinct().from(Player.class).execute();
+		pos.add("All");
+		
+		List<Player> players = new Select(new String[]{"group_field"}).distinct().from(Player.class).where("sport=?", sport).execute();
 		for(Player p : players) {
-			pos.add(p.sport);
+			pos.add(p.group);
 		}
 		return pos;
 	}
@@ -87,8 +96,8 @@ public class Connection {
 		return d;
 	}
 	
-	public static int deleteRoster() {
-		From f = new Delete().from(Player.class);
+	public static int deleteRoster(String sport) {
+		From f = new Delete().from(Player.class).where("sport=?", sport);
 		f.execute();
 		return f.count();
 	}
@@ -107,7 +116,7 @@ public class Connection {
 		Connection.websiteId = id;
 		switch(websiteId) {
 		case 1:
-			website = new YahooSite(url);
+			website = new YahooSite(url, MainActivity.activeSport.sport);
 			break;
 		case 2:
 			website = new NflSite(url);

@@ -4,7 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.*;
 
 @Table(name="Player")
-public class Player extends Model implements Comparable<Player>{
+public class Player extends Model {
 	public static String sortBy;
 	public int id = 0;
 	
@@ -59,20 +59,5 @@ public class Player extends Model implements Comparable<Player>{
 			return 0;
 		}
 		return c_number;
-	}
-
-	@Override
-	public int compareTo(Player arg0) {
-		if(Player.sortBy == null) Player.sortBy = "name";
-		
-		if(sortBy.equals("number")) {
-			int comp = arg0.getNumAsInt();
-			int curr = this.getNumAsInt();
-			if(comp > curr) return -1;
-			if(comp < curr) return 1;
-			else return 0;
-		} else {
-			return this.name.compareTo(arg0.name);
-		}
 	}
 }

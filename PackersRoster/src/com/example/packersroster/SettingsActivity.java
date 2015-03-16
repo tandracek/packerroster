@@ -31,6 +31,7 @@ public class SettingsActivity extends Activity {
             
             SettingsFragment.setSummary(findPreference("website_pref"));
             SettingsFragment.setSummary(findPreference("website_mlb_pref"));
+            SettingsFragment.setSummary(findPreference("website_nba_pref"));
         }
         
         @Override
