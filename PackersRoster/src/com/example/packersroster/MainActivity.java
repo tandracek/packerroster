@@ -209,7 +209,7 @@ public class MainActivity extends Activity implements
 
 	public void SwitchSports() {
 		// TODO: check that they actually selected a new sport, also figure out if setting styles should be done here and not in async
-
+		roster_adapter.resetSort();
 		new RosterDownload().execute(new Boolean[] { false });
 	}
 	

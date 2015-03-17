@@ -47,27 +47,27 @@ public class YahooSite extends WebSite {
 				
 		String grouping;
 		for(int i = 0; i < details.size(); i++) {
-			grouping = details.get(i).select("h3").html();
+			grouping = details.get(i).select("h3").get(0).ownText();
 			Elements player_eles = details.get(i).select("tr");
 			for(int j = 1; j < player_eles.size(); j++) {
 				Element player = player_eles.get(j);
-				String number = player.select(".number").html();
-				String college = player.select(".college").html();
-				String age = player.select(".age").html();
-				String experience = player.select(".experience").html();
-				String salary = player.select(".salary").html();
+				String number = player.select(".number").get(0).ownText();
+				String college = player.select(".college").get(0).ownText();
+				String age = player.select(".age").get(0).ownText();
+				String experience = player.select(".experience").get(0).ownText();
+				String salary = player.select(".salary").get(0).ownText();
 				if(salary.startsWith("<span")) salary = " - "; 
 				
 				Element playerName = player.select(".player a").get(0);
-				String name = formatName(playerName.html());
+				String name = formatName(playerName.ownText());
 				String link = playerName.attr("href");
 				
 				Elements positions = player.select(".position > abbr");
 				String position = "";
 				int posSize = positions.size();
 				for(int k = 0; k < posSize; k++) {
-					if(k == 0) position = positions.get(k).html();
-					else position += ("\\" + positions.get(k).html());
+					if(k == 0) position = positions.get(k).ownText();
+					else position += ("\\" + positions.get(k).ownText());
 				}
 				
 				Player tempPlayer = new Player(name, position, number);

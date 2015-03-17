@@ -54,6 +54,12 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 		sortCols = new boolean[cols];
 	}
 	
+	public void resetSort() {
+		for(int i = 0; i < sortCols.length; i++) {
+			sortCols[i] = false;
+		}
+	}
+	
 	public void sortRoster(int col, int viewId) {
 		Comparator<Player> comp = null;
 		switch(viewId) {

@@ -16,7 +16,7 @@
 	<string name="NFL">NFL</string>
 	<string name="MLB">MLB</string>
 	<string name="NBA">NBA</string>
-	<string name="menu_position">G></string>
+	<string name="menu_position">Group</string>
 	<string name="menu_sort">Sort by></string>
 	<string name="menu_number">Number</string>
 	<string name="menu_name">Name</string>

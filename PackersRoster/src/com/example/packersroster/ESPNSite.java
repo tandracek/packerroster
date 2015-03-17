@@ -17,11 +17,7 @@ public class ESPNSite extends WebSite {
 
 		Element cont = doc.getElementById("my-players-table");
 		Elements tables = cont.getElementsByTag("table");
-
-		int start = 0;
-		if (tables.size() > 1)
-			start = 1;
-		Elements rows = tables.get(start).getElementsByTag("tr");
+		Elements rows = tables.get(0).getElementsByTag("tr");
 
 		Elements cells, link;
 		for (int i = 2; i < rows.size(); i++) {
