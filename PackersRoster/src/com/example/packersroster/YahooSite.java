@@ -97,18 +97,18 @@ public class YahooSite extends WebSite {
 	DraftInfo getDraftInfo(String playerUrl) {
 		this.connect(playerUrl);
 		Element bio = doc.select(".bio").get(0);
-		String draft = bio.select(".draft dd").html();
+		String draft = bio.select(".draft dd").get(0).ownText();
 
 		if(draft.contains("Undrafted")) {
 			return new DraftInfo(true);
 		}
 		
 		String[] draftArr = draft.split(" ");
-		String round = draftArr[1].substring(0, 1);
+		String round = draftArr[1];
 		String year = draftArr[0];
 		
 		String team = "";
-		for(int i = 7; i < draftArr.length; i++) {
+		for(int i = (draftArr.length - 2); i < draftArr.length; i++) {
 			team += draftArr[i] + " ";
 		}
 		

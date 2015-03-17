@@ -5,7 +5,6 @@ import com.activeandroid.annotation.*;
 
 @Table(name="Player")
 public class Player extends Model {
-	public static String sortBy;
 	public int id = 0;
 	
 	public String sortedValue;

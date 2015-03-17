@@ -1,12 +1,10 @@
 package com.example.packersroster;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
-import com.activeandroid.TableInfo;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
@@ -82,24 +80,26 @@ public class Connection {
 		return pos;
 	}
 	
+	//TODO: test this and create upgrade script
 	public DraftInfo getDraftStr(boolean goOnline, Player player) {
 		if(!goOnline) {
-			return new Select().from(DraftInfo.class).where("Player = ?", player.getId()).executeSingle();
+			return new Select(new String[]{"DraftInfo"}).from(Player.class).where("Player = ?", player.getId()).executeSingle();
 		}
 		
 		this.deriveSite();
 		
 		DraftInfo d = website.getDraftInfo(player.link);
-		d.player = player;
-		d.save();
+		player.draftInfo = d;
+		player.save();
 
 		return d;
 	}
 	
 	public static int deleteRoster(String sport) {
 		From f = new Delete().from(Player.class).where("sport=?", sport);
+		int numRows = f.count();
 		f.execute();
-		return f.count();
+		return numRows;
 	}
 	
 	private void deriveSite() {	

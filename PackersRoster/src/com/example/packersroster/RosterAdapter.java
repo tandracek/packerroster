@@ -81,6 +81,11 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 		}
 		else Collections.reverse(roster_list);
 	}
+	
+	@Override
+	public Player getItem(int index) {
+		return roster_list.get(index);
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

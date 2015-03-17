@@ -4,8 +4,6 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
-import android.util.Log;
-
 @Table(name="Draft")
 public class DraftInfo extends Model {
 	@Column(name="round")
@@ -16,8 +14,6 @@ public class DraftInfo extends Model {
 	public String year;
 	@Column(name="team")
 	public String team;
-	@Column(name="Player")
-	public Player player;
 	public boolean isUndrafted;
 	
 	public DraftInfo() {

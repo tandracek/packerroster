@@ -35,9 +35,7 @@ public class PlayerDetails extends Activity {
         this.buildTextView(R.id.expView, "Exp: " + currPlayer.experience);
         this.buildTextView(R.id.collegeView, "College: " + currPlayer.college);
         this.buildTextView(R.id.salaryView, "Salary: " + currPlayer.salary);
-        
-        DraftInfo d = new Connection(this).getDraftStr(false, currPlayer);
-        this.buildDraftDetailsView(d);
+        this.buildDraftDetailsView(currPlayer.draftInfo);
         
         Button detailsBtn = (Button) findViewById(R.id.detailsBtn);
         detailsBtn.setOnClickListener(new View.OnClickListener(){
