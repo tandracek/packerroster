@@ -2,6 +2,7 @@ package com.example.packersroster;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -118,5 +119,26 @@ public class YahooSite extends WebSite {
 		else pick = temp.substring(1, 2);
 		
 		return new DraftInfo(round, pick, team, year);
+	}
+	
+	public ArrayList<NflStats> getSeasonNflStats(String playerUrl) {
+		this.connect(playerUrl);
+		Element careerStats = doc.getElementsByClass("yom-sports-career-stats").get(0);
+		Elements conts = careerStats.getElementsByClass("data-container");
+		for(int i = 0; i < conts.size(); i++) {
+			Elements table = conts.get(i).getElementsByTag("table");
+			String statGroup = table.attr("summary");
+			
+			Elements tr = table.get(0).getElementsByTag("tbody").get(0).getElementsByTag("tr");
+			//TODO: once this can be tested, can remove the limits so it can grab all seasons
+			for(int j = (tr.size() - 2); j < (tr.size() - 1); j++) {
+				Elements td = tr.get(j).getElementsByTag("td");
+				for(int k = 0; k < td.size(); k++) {
+					//Dont really need a lot, can figure out a lot (compl pct, yds/game, ect) by doig math on my own
+				}
+			}
+		}
+		
+		return null;
 	}
 }

@@ -40,7 +40,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-// TODO: add an icon in the action bar that groups by position, it builds the PosSortDialog
+// TODO: change to odd/even row styling
 public class MainActivity extends Activity implements
 		PopupMenu.OnMenuItemClickListener, PosSortDialog.PosSortInterface {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
@@ -205,6 +205,11 @@ public class MainActivity extends Activity implements
 
 	protected void onDestroy() {
 		super.onDestroy();
+	}
+	
+	protected void onResume() {
+		super.onResume();
+		setActionBarStyle();
 	}
 
 	public void SwitchSports() {
