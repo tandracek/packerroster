@@ -1,30 +1,23 @@
-package com.example.packersroster;
+package com.packersroster.connection;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 
 public abstract class WebSite {
-	protected String url;
-	protected String sport;
 	protected Document doc;
-	protected ArrayList<Player> player_list;
 	
-	WebSite(String Url, String sport) {
-		this.url = Url;
-		this.sport = sport;
-		player_list = new ArrayList<Player>();
+	protected WebSite() {
+
 	}
-	
-	abstract ArrayList<Player> getRoster();
-	abstract DraftInfo getDraftInfo(String playerUrl);
 	
 	protected boolean connect(String Url) {
 		String connectUrl = Url;
-		if(Url == null) connectUrl = this.url; 
 		try {
 			doc = Jsoup
 					.connect(
@@ -35,5 +28,23 @@ public abstract class WebSite {
 			e.printStackTrace();
 			return false;
 		} 
+	}
+	
+	protected String itemSelect(Element item, String selector) {
+		String ret = "-";
+		Elements eles = item.select(selector);
+		if (eles.size() > 0) ret = eles.get(0).ownText();
+		
+		return ret;
+	}
+	
+	protected String formatName(String name) {
+		String[] names = name.split(" ");
+		
+		if(names.length > 1) {
+			String returnStr = names[1] + ", " + names[0];
+			return returnStr;
+		}
+		return name;
 	}
 }

@@ -1,4 +1,4 @@
-package com.example.packersroster;
+package com.packersroster.player;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.*;

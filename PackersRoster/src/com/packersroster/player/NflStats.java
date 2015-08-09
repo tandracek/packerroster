@@ -1,4 +1,4 @@
-package com.example.packersroster;
+package com.packersroster.player;
 
 import com.activeandroid.Model;
 
@@ -6,7 +6,7 @@ import com.activeandroid.Model;
  * -Each row (instance of this class) will represent 1 year of a players stats
  * -Boolean can indicate if current row is last years stats, might be hard (and pointless) to figure out based on date
  */
-public class NflStats  {
+public class NflStats extends Stats {
 
 	public int season;
 	public int games;

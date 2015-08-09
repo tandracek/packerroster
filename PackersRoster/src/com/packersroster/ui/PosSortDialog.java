@@ -1,6 +1,8 @@
-package com.example.packersroster;
+package com.packersroster.ui;
 
 import java.util.List;
+
+import com.example.packersroster.R;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,10 +21,14 @@ public class PosSortDialog extends DialogFragment {
 		public void onPosClickListener(CharSequence position);
 	}
 	
-	PosSortDialog(List<String> pos) {
+	public PosSortDialog() {
 		super();
-		this.pos = pos.toArray(new CharSequence[pos.size()]);
+		this.pos = new CharSequence[1];
 		this.selected = -1;
+	}
+	
+	public void setPositions(List<String> pos) {
+		this.pos = pos.toArray(new CharSequence[pos.size()]);
 	}
 	
     @Override

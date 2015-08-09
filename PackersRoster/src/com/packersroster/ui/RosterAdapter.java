@@ -1,8 +1,13 @@
-package com.example.packersroster;
+package com.packersroster.ui;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.example.packersroster.R;
+import com.packersroster.activities.MainActivity;
+import com.packersroster.connection.SportDataUtils;
+import com.packersroster.player.Player;
 
 import android.content.Context;
 import android.util.Log;
@@ -131,7 +136,7 @@ public class RosterAdapter extends ArrayAdapter<Player> implements Filterable {
 			}
 			
 			FilterResults results = new FilterResults();			
-			List<Player> players = Connection.filterPlayers(MainActivity.activeSport.sport, arg0.toString());
+			List<Player> players = SportDataUtils.filterPlayers(MainActivity.activeSport.sport, arg0.toString());
 
 			results.count = players.size();
 			results.values = players;

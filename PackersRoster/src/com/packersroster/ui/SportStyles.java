@@ -1,4 +1,6 @@
-package com.example.packersroster;
+package com.packersroster.ui;
+
+import com.example.packersroster.R;
 
 public enum SportStyles {
 

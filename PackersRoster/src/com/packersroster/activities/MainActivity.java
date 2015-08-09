@@ -1,32 +1,29 @@
-package com.example.packersroster;
+package com.packersroster.activities;
 
 import java.util.List;
 
-import com.activeandroid.query.Select;
-import com.example.packersroster.SettingsActivity.SettingsFragment;
+import com.example.packersroster.R;
+import com.example.packersroster.R.id;
+import com.example.packersroster.R.layout;
+import com.example.packersroster.R.menu;
+import com.packersroster.connection.SportDataUtils;
+import com.packersroster.player.Player;
+import com.packersroster.ui.PosSortDialog;
+import com.packersroster.ui.RosterAdapter;
+import com.packersroster.ui.SportStyles;
+import com.packersroster.ui.PosSortDialog.PosSortInterface;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v4.view.MenuItemCompat;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +40,6 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements
 		PopupMenu.OnMenuItemClickListener, PosSortDialog.PosSortInterface {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
-	public DataHandler roster_handler;
 	public Context main_context;
 	public RosterAdapter roster_adapter;
 	public ListView roster_view;
@@ -58,7 +53,6 @@ public class MainActivity extends Activity implements
 	private ActionBar aBar;
 	private TextView helpText;
 	private static final String TAG = "MainActivity";
-	private boolean switched;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +66,11 @@ public class MainActivity extends Activity implements
 		PreferenceManager.setDefaultValues(this, R.layout.preferences, false);
 		if (MainActivity.activeSport == null) {
 			MainActivity.activeSport = SportStyles.NFL;
-			MainActivity.positions = Connection.getPositions(MainActivity.activeSport.sport);
+			MainActivity.positions = SportDataUtils.getPositions(MainActivity.activeSport.sport);
 			this.setActionBarStyle();
-			switched = true;
 		}
 
-		List<Player> player_list = new Connection(this).getRoster(false);
+		List<Player> player_list = SportDataUtils.getRoster(false, MainActivity.activeSport);
 
 		roster_view = (ListView) findViewById(R.id.listView1);
 		roster_adapter = new RosterAdapter(this, R.layout.roster_list,
@@ -117,7 +110,8 @@ public class MainActivity extends Activity implements
 	}
 	
 	public void posPopup(MenuItem item) {
-		DialogFragment popup = new PosSortDialog(MainActivity.positions);
+		PosSortDialog popup = new PosSortDialog();
+		popup.setPositions(MainActivity.positions);
 		popup.show(getFragmentManager(), "posWin");
 	}
 
@@ -179,11 +173,11 @@ public class MainActivity extends Activity implements
 		switch (item.getItemId()) {
 		case R.id.refresh_roster:
 			if (roster_adapter.getCount() > 0)
-				Connection.deleteRoster(MainActivity.activeSport.sport);
+				SportDataUtils.deleteRoster(MainActivity.activeSport.sport);
 			new RosterDownload().execute();
 			return true;
 		case R.id.delete_roster:
-			int rows = Connection.deleteRoster(MainActivity.activeSport.sport);
+			int rows = SportDataUtils.deleteRoster(MainActivity.activeSport.sport);
 			roster_adapter.clear();
 			roster_adapter.notifyDataSetChanged();
 			helpText.setVisibility(View.VISIBLE);
@@ -243,13 +237,14 @@ public class MainActivity extends Activity implements
 			if (params.length > 0) {
 				goOnline = params[0].booleanValue();
 			}
-			List<Player> newRoster = new Connection(MainActivity.this).getRoster(goOnline);
-			MainActivity.positions = Connection.getPositions(MainActivity.activeSport.sport);
+			List<Player> newRoster = SportDataUtils.getRoster(false, MainActivity.activeSport);
+			MainActivity.positions = SportDataUtils.getPositions(MainActivity.activeSport.sport);
 			return newRoster;
 		}
 
 		@Override
 		protected void onPostExecute(List<Player> result) {
+			pDialog.dismiss();
 			roster_adapter.clear();
 			if (result.size() > 0) {
 				helpText.setVisibility(View.GONE);
@@ -260,7 +255,6 @@ public class MainActivity extends Activity implements
 				roster_adapter.notifyDataSetChanged();
 			}
 			setActionBarStyle();
-			pDialog.dismiss();
 		}
 
 	}

@@ -1,18 +1,24 @@
-package com.example.packersroster;
+package com.packersroster.websites;
 
 import java.util.ArrayList;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.packersroster.connection.WebSite;
+import com.packersroster.player.DraftInfo;
+import com.packersroster.player.Player;
+import com.packersroster.player.Stats;
+
 public class ESPNSite extends WebSite {
+	public ArrayList<Player> player_list;
 
 	public ESPNSite(String Url, String sport) {
-		super(Url, sport);
+		super();
+		player_list = new ArrayList<Player>();
 	}
 
-	@Override
-	ArrayList<Player> getRoster() {
+	public ArrayList<Player> getRoster() {
 		if(!this.connect(null)) return player_list;
 
 		Element cont = doc.getElementById("my-players-table");
@@ -47,8 +53,7 @@ public class ESPNSite extends WebSite {
 		return player_list;
 	}
 
-	@Override
-	DraftInfo getDraftInfo(String playerUrl) {
+	public DraftInfo getDraftInfo(String playerUrl) {
 		this.connect(playerUrl);
 		
 		Element data = doc.getElementsByClass("player-metadata").get(0);
@@ -67,6 +72,11 @@ public class ESPNSite extends WebSite {
 		team = teamSpl[teamSpl.length];
 		
 		return new DraftInfo(round, pick, team, year);
+	}
+
+	public <T extends Stats> ArrayList<T> getSeasonStats(String playerUrl) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,4 +1,6 @@
-package com.example.packersroster;
+package com.packersroster.ui;
+
+import com.packersroster.player.DraftInfo;
 
 import android.os.Parcel;
 import android.os.Parcelable;

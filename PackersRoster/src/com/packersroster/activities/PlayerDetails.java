@@ -1,6 +1,12 @@
-package com.example.packersroster;
+package com.packersroster.activities;
 
-import com.activeandroid.query.Select;
+import com.example.packersroster.R;
+import com.example.packersroster.R.id;
+import com.example.packersroster.R.layout;
+import com.example.packersroster.R.string;
+import com.packersroster.connection.SportDataUtils;
+import com.packersroster.player.DraftInfo;
+import com.packersroster.player.Player;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -26,7 +32,7 @@ public class PlayerDetails extends Activity {
         
         Intent intent = getIntent();
         Long playerId = intent.getLongExtra(MainActivity.PLAYER_EXTRA, 0);
-        currPlayer = Connection.getPlayerById(playerId);
+        currPlayer = SportDataUtils.getPlayerById(playerId);
     
         this.buildTextView(R.id.nameView, currPlayer.name);
         this.buildTextView(R.id.numberView, "   - #" + currPlayer.number);
@@ -71,7 +77,7 @@ public class PlayerDetails extends Activity {
 		
 		@Override
 		protected DraftInfo doInBackground(String... params) {
-			return new Connection(PlayerDetails.this).getDraftStr(true, currPlayer);
+			return SportDataUtils.getDraftInfo(true, currPlayer);
 		}
 		
 		@Override

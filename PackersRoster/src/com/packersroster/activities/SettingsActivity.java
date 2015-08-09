@@ -1,4 +1,7 @@
-package com.example.packersroster;
+package com.packersroster.activities;
+
+import com.example.packersroster.R;
+import com.example.packersroster.R.layout;
 
 import android.app.Activity;
 import android.content.SharedPreferences;

@@ -1,6 +1,8 @@
-package com.example.packersroster;
+package com.packersroster.ui;
 
 import java.util.List;
+
+import com.example.packersroster.R;
 
 import android.content.Context;
 import android.view.LayoutInflater;

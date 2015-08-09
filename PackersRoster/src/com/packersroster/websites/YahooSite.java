@@ -1,4 +1,4 @@
-package com.example.packersroster;
+package com.packersroster.websites;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,22 +9,24 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.packersroster.connection.WebSite;
+import com.packersroster.player.DraftInfo;
+import com.packersroster.player.NflStats;
+import com.packersroster.player.Player;
+import com.packersroster.player.Stats;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 
-/*
- * TODO: move the connection method to super website class, put document and list in there as well
- */
+
 public class YahooSite extends WebSite {
 	private final static String YAHOO_MAIN_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
-	
-	public YahooSite() {
-		super(YAHOO_MAIN_URL, "NFL");
-	}
+	public ArrayList<Player> player_list;
 	
 	public YahooSite(String url, String sport) {
-		super(url, sport);
+		super();
+		player_list = new ArrayList<Player>();
 	}
 	
 	public ArrayList<Player> getRoster() {
@@ -52,11 +54,11 @@ public class YahooSite extends WebSite {
 			Elements player_eles = details.get(i).select("tr");
 			for(int j = 1; j < player_eles.size(); j++) {
 				Element player = player_eles.get(j);
-				String number = player.select(".number").get(0).ownText();
-				String college = player.select(".college").get(0).ownText();
-				String age = player.select(".age").get(0).ownText();
-				String experience = player.select(".experience").get(0).ownText();
-				String salary = player.select(".salary").get(0).ownText();
+				String number = this.itemSelect(player, ".number");
+				String college = this.itemSelect(player, ".college");
+				String age = this.itemSelect(player, ".age");
+				String experience = this.itemSelect(player, ".age");
+				String salary = this.itemSelect(player, ".salary");
 				if(salary.startsWith("<span")) salary = " - "; 
 				
 				Element playerName = player.select(".player a").get(0);
@@ -83,19 +85,8 @@ public class YahooSite extends WebSite {
 			}
 		}
 	}
-	
-	private String formatName(String name) {
-		String[] names = name.split(" ");
-		
-		if(names.length > 1) {
-			String returnStr = names[1] + ", " + names[0];
-			return returnStr;
-		}
-		return name;
-	}
 
-	@Override
-	DraftInfo getDraftInfo(String playerUrl) {
+	public DraftInfo getDraftInfo(String playerUrl) {
 		this.connect(playerUrl);
 		Element bio = doc.select(".bio").get(0);
 		String draft = bio.select(".draft dd").get(0).ownText();
@@ -121,8 +112,14 @@ public class YahooSite extends WebSite {
 		return new DraftInfo(round, pick, team, year);
 	}
 	
-	public ArrayList<NflStats> getSeasonNflStats(String playerUrl) {
+	public NflStats getNflStats() {
+		return null;
+	}
+
+	public <T extends Stats> ArrayList<T> getSeasonStats(String playerUrl) {
 		this.connect(playerUrl);
+		
+		ArrayList<T> returnStats = new ArrayList<T>();
 		Element careerStats = doc.getElementsByClass("yom-sports-career-stats").get(0);
 		Elements conts = careerStats.getElementsByClass("data-container");
 		for(int i = 0; i < conts.size(); i++) {
@@ -132,13 +129,12 @@ public class YahooSite extends WebSite {
 			Elements tr = table.get(0).getElementsByTag("tbody").get(0).getElementsByTag("tr");
 			//TODO: once this can be tested, can remove the limits so it can grab all seasons
 			for(int j = (tr.size() - 2); j < (tr.size() - 1); j++) {
+				String cellClass;
 				Elements td = tr.get(j).getElementsByTag("td");
-				for(int k = 0; k < td.size(); k++) {
-					//Dont really need a lot, can figure out a lot (compl pct, yds/game, ect) by doig math on my own
-				}
+				returnStats.add((T)getNflStats());
 			}
 		}
 		
-		return null;
+		return returnStats;
 	}
 }
