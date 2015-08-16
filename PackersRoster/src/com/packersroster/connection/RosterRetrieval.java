@@ -9,8 +9,9 @@ import com.packersroster.player.Player;
 import com.packersroster.ui.SportStyles;
 
 public class RosterRetrieval extends WebSite {
-	private final static String YAHOO_MAIN_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
-	private final static String ESPN_MAIN_URL = "http://espn.go.com/nba/team/roster/_/name/mil/milwaukee-bucks";
+	private final static String YAHOO_NFL_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
+	private final static String ESPN_NBA_URL = "http://espn.go.com/nba/team/roster/_/name/mil/milwaukee-bucks";
+	private final static String YAHOO_MLB_URL = "http://sports.yahoo.com/nba/teams/mil/roster/";
 	private ArrayList<Player> playerList;
 	private SportStyles sport;
 	
@@ -23,12 +24,15 @@ public class RosterRetrieval extends WebSite {
 	public ArrayList<Player> getRoster() {
 		switch(this.sport) {
 		case NFL:
+			this.connect(YAHOO_NFL_URL);
+			this.getYahooRoster();
+			break;
 		case MLB:
-			this.connect(YAHOO_MAIN_URL);
+			this.connect(YAHOO_MLB_URL);
 			this.getYahooRoster();
 			break;
 		case NBA:
-			this.connect(ESPN_MAIN_URL);
+			this.connect(ESPN_NBA_URL);
 			this.getEspnRoster();
 			break;
 		}
@@ -58,7 +62,8 @@ public class RosterRetrieval extends WebSite {
 			String height, weight;
 			height = cells.get(4).ownText();
 			weight = cells.get(5).ownText();
-			tempPlayer.ht_wt = height + " " + weight;
+			tempPlayer.height = height;
+			tempPlayer.weight = weight;
 			tempPlayer.college = cells.get(6).ownText();
 			tempPlayer.salary = cells.get(7).ownText();
 			
@@ -79,7 +84,7 @@ public class RosterRetrieval extends WebSite {
 				String number = this.itemSelect(player, ".number");
 				String college = this.itemSelect(player, ".college");
 				String age = this.itemSelect(player, ".age");
-				String experience = this.itemSelect(player, ".age");
+				String experience = this.itemSelect(player, ".experience");
 				String salary = this.itemSelect(player, ".salary");
 				if(salary.startsWith("<span")) salary = " - "; 
 				

@@ -96,17 +96,6 @@ public class MainActivity extends Activity implements
 						startActivity(mainIntent);
 					}
 				});
-
-		Button testBtn = (Button) findViewById(R.id.testBtn);
-		testBtn.setVisibility(View.GONE);
-		testBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// Connection.getAndShowRoster(1, roster_adapter, roster_view,
-				// main_context);
-			}
-		});
 	}
 	
 	public void posPopup(MenuItem item) {
@@ -237,7 +226,7 @@ public class MainActivity extends Activity implements
 			if (params.length > 0) {
 				goOnline = params[0].booleanValue();
 			}
-			List<Player> newRoster = SportDataUtils.getRoster(false, MainActivity.activeSport);
+			List<Player> newRoster = SportDataUtils.getRoster(goOnline, MainActivity.activeSport);
 			MainActivity.positions = SportDataUtils.getPositions(MainActivity.activeSport.sport);
 			return newRoster;
 		}

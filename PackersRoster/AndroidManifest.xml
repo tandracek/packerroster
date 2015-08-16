@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:name="com.activeandroid.app.Application" >
         <meta-data android:name="AA_DB_NAME" android:value="roster_db.db" />
-		<meta-data android:name="AA_DB_VERSION" android:value="4" />
+		<meta-data android:name="AA_DB_VERSION" android:value="6" />
 		<meta-data android:name="AA_MODELS"
     			   android:value="com.example.packersroster.Player, com.example.packersroster.DraftInfo, com.example.packersroster.NflStats" />
         <activity

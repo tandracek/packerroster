@@ -6,6 +6,15 @@
     <string name="brewer_roster">Brewers</string>
     <string name="bucks_roster">Bucks</string>
     
+    <string name="age_label">Age: </string>
+    <string name="weight_label">Weight: </string>
+    <string name="height_label">Height: </string>
+    <string name="college_label">College: </string>
+    <string name="exp_label">Experience: </string>
+    <string name="salary_label">Salary: </string>
+    <string name="born_dt_label">Birth Date: </string>
+    <string name="born_place_label">Birth Place: </string>
+    
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="roster_label">Roster</string>

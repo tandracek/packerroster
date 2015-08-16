@@ -20,4 +20,10 @@ public enum SportStyles {
 		this.sportPref = sportPref;
 	}
 	
+	public static SportStyles sportFromString(String sport) {
+		for (SportStyles s : SportStyles.values()) {
+			if (s.sport.equals(sport)) return s;
+		}
+		return null;
+	}
 }

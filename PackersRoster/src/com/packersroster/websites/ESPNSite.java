@@ -43,7 +43,8 @@ public class ESPNSite extends WebSite {
 			String height, weight;
 			height = cells.get(4).ownText();
 			weight = cells.get(5).ownText();
-			tempPlayer.ht_wt = height + " " + weight;
+			tempPlayer.height = height;
+			tempPlayer.weight = weight;
 			tempPlayer.college = cells.get(6).ownText();
 			tempPlayer.salary = cells.get(7).ownText();
 			

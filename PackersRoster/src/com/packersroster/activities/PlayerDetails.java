@@ -1,9 +1,6 @@
 package com.packersroster.activities;
 
 import com.example.packersroster.R;
-import com.example.packersroster.R.id;
-import com.example.packersroster.R.layout;
-import com.example.packersroster.R.string;
 import com.packersroster.connection.SportDataUtils;
 import com.packersroster.player.DraftInfo;
 import com.packersroster.player.Player;
@@ -33,15 +30,7 @@ public class PlayerDetails extends Activity {
         Intent intent = getIntent();
         Long playerId = intent.getLongExtra(MainActivity.PLAYER_EXTRA, 0);
         currPlayer = SportDataUtils.getPlayerById(playerId);
-    
-        this.buildTextView(R.id.nameView, currPlayer.name);
-        this.buildTextView(R.id.numberView, "   - #" + currPlayer.number);
-        this.buildTextView(R.id.posView, currPlayer.position);
-        this.buildTextView(R.id.ageView, "Age: " + currPlayer.age);
-        this.buildTextView(R.id.expView, "Exp: " + currPlayer.experience);
-        this.buildTextView(R.id.collegeView, "College: " + currPlayer.college);
-        this.buildTextView(R.id.salaryView, "Salary: " + currPlayer.salary);
-        this.buildDraftDetailsView(currPlayer.draftInfo);
+        this.buildPlayerDetails();
         
         Button detailsBtn = (Button) findViewById(R.id.detailsBtn);
         detailsBtn.setOnClickListener(new View.OnClickListener(){
@@ -63,11 +52,27 @@ public class PlayerDetails extends Activity {
 	}
 
 	private void buildTextView(int viewId, String text) {
+		if (text == null) return;
 		TextView view = (TextView) findViewById(viewId);
 		view.setText(text);
 	}
 	
-	private class GetDetails extends AsyncTask<String, String, DraftInfo> {
+	private void buildPlayerDetails() {
+        this.buildTextView(R.id.nameView, currPlayer.name);
+        this.buildTextView(R.id.numberView, "   - #" + currPlayer.number);
+        this.buildTextView(R.id.posView, currPlayer.position);
+        this.buildTextView(R.id.ageViewText, currPlayer.age);
+        this.buildTextView(R.id.expViewText, currPlayer.experience);
+        this.buildTextView(R.id.collegeViewText, currPlayer.college);
+        this.buildTextView(R.id.salaryViewText, currPlayer.salary);
+        this.buildTextView(R.id.weightViewText, currPlayer.weight);
+        this.buildTextView(R.id.heightViewText, currPlayer.height);
+        this.buildTextView(R.id.bornDateViewText, currPlayer.bornDate);
+        this.buildTextView(R.id.bornPlaceViewText, currPlayer.bornPlace);
+        this.buildDraftDetailsView(currPlayer.draftInfo);
+	}
+	
+	private class GetDetails extends AsyncTask<String, String, Player> {
 
 		ProgressDialog pDialog;
 		protected void onPreExecute() {
@@ -76,14 +81,16 @@ public class PlayerDetails extends Activity {
 		}
 		
 		@Override
-		protected DraftInfo doInBackground(String... params) {
-			return SportDataUtils.getDraftInfo(true, currPlayer);
+		protected Player doInBackground(String... params) {
+			return SportDataUtils.getDetails(true, currPlayer);
 		}
 		
 		@Override
-	    protected void onPostExecute(DraftInfo result) {
-			buildDraftDetailsView(result);
+	    protected void onPostExecute(Player result) {
+			currPlayer = result;
+			buildPlayerDetails();
 			pDialog.dismiss();
 	    }
 	}
+	
 }

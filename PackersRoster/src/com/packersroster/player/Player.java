@@ -1,5 +1,7 @@
 package com.packersroster.player;
 
+import java.util.Date;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.*;
 
@@ -26,8 +28,14 @@ public class Player extends Model {
 	public String experience;
 	@Column(name="age")
 	public String age;
-	@Column(name="ht_wt")
-	public String ht_wt;
+	@Column(name="height")
+	public String height;
+	@Column(name="weight")
+	public String weight;
+	@Column(name="bornDate")
+	public String bornDate;
+	@Column(name="bornPlace")
+	public String bornPlace;
 	@Column(name="college")
 	public String college;
 	@Column(name="group_field")

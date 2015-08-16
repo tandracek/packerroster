@@ -61,17 +61,16 @@ public class SportDataUtils {
 		return pos;
 	}
 	
-	public static DraftInfo getDraftInfo(boolean goOnline, Player player) {
+	public static Player getDetails(boolean goOnline, Player player) {
 		if(!goOnline) {
 			return new Select(new String[]{"DraftInfo"}).from(Player.class).where("Player = ?", player.getId()).executeSingle();
 		}
 
 		PlayerInfoRetrieval pInfoRet = new PlayerInfoRetrieval();
-		DraftInfo d = pInfoRet.getDraftInfo(player.link);
-		player.draftInfo = d;
+		player = pInfoRet.getDetails(player, player.link);
 		player.save();
 
-		return d;
+		return player;
 	}
 	
 	// TODO: actually build this
