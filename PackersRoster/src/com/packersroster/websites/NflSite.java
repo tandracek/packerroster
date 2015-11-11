@@ -23,7 +23,7 @@ public class NflSite extends WebSite{
 	private final static String NFL_MAIN_URL = "http://www.nfl.com/players/search?category=team&filter=1800&playerType=current";
 	
 	public NflSite(String url) {
-		super();
+		super(null);
 		player_list = new ArrayList<Player>();
 	}
 	

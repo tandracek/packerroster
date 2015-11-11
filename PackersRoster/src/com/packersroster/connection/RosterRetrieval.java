@@ -11,14 +11,12 @@ import com.packersroster.ui.SportStyles;
 public class RosterRetrieval extends WebSite {
 	private final static String YAHOO_NFL_URL = "http://sports.yahoo.com/nfl/teams/gnb/roster/";
 	private final static String ESPN_NBA_URL = "http://espn.go.com/nba/team/roster/_/name/mil/milwaukee-bucks";
-	private final static String YAHOO_MLB_URL = "http://sports.yahoo.com/nba/teams/mil/roster/";
+	private final static String YAHOO_MLB_URL = "http://sports.yahoo.com/mlb/teams/mil/roster/";
 	private ArrayList<Player> playerList;
-	private SportStyles sport;
 	
 	public RosterRetrieval(SportStyles sport) {
-		super();
+		super(sport);
 		this.playerList = new ArrayList<Player>();
-		this.sport = sport;
 	}
 	
 	public ArrayList<Player> getRoster() {

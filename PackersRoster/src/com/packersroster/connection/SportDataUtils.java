@@ -3,6 +3,8 @@ package com.packersroster.connection;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
@@ -14,7 +16,9 @@ import com.packersroster.player.Stats;
 import com.packersroster.ui.SportStyles;
 
 public class SportDataUtils {
+	public static final String TAG = "SportDataUtils";
 
+	// TODO: fix sql errors inserting same players because of injury section
 	public static List<Player> getRoster(boolean goOnline, SportStyles sport) {
 		if (!goOnline) { 
 			return new Select().from(Player.class).where("sport=?", sport.sport).execute();
@@ -63,9 +67,8 @@ public class SportDataUtils {
 	
 	public static Player getDetails(boolean goOnline, Player player) {
 		if(!goOnline) {
-			return new Select(new String[]{"DraftInfo"}).from(Player.class).where("Player = ?", player.getId()).executeSingle();
+			return new Select().from(Player.class).where("Player = ?", player.getId()).executeSingle();
 		}
-
 		PlayerInfoRetrieval pInfoRet = new PlayerInfoRetrieval();
 		player = pInfoRet.getDetails(player, player.link);
 		player.save();
@@ -73,17 +76,35 @@ public class SportDataUtils {
 		return player;
 	}
 	
-	// TODO: actually build this
-	public static <T extends Stats> List<T> getStats(boolean goOnline, Class<? extends Model> table) {
-		if (!goOnline) {
-			return new Select().from(table).execute();
+	@SuppressWarnings("unchecked")
+	public static List<Stats> getStats(boolean goOnline, Player player) {
+		SportStyles sport = SportStyles.sportFromString(player.sport);
+		Class<? extends Model> statClass = (Class<? extends Model>)sport.statClass;
+		if (statClass == null) {
+			Log.e(TAG, "Stat class is null");
+			return null;
 		}
-		ArrayList<T> stats = null; //website.getSeasonStats("");
+		
+		if (!goOnline) {
+			return new Select().from(statClass).where("Player = ?", player.getId()).execute();
+		}
+		SportDataUtils.deleteStats(player);
+		StatsRetrieval statsUtil = new StatsRetrieval(sport);
+		List<Stats> stats = null;
+		try {
+			stats = statsUtil.retrieveStats(player);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
 		
 		ActiveAndroid.beginTransaction();
 		try {
-			for(T t: stats) {
-				t.save();
+			for(Stats stat: stats) {
+				stat.save();
 			}
 			ActiveAndroid.setTransactionSuccessful();
 		} finally {
@@ -91,6 +112,26 @@ public class SportDataUtils {
 		}
 		
 		return stats;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static int deleteStats(Player player) {
+		SportStyles sport = SportStyles.sportFromString(player.sport);
+		if(sport == null) return 0;
+		
+		Class<? extends Model> statModel = (Class<? extends Model>)sport.statClass;
+		From f = new Delete().from(statModel).where("Player=?", player);
+		int numRows = f.count();
+		f.execute();
+		return numRows;
+	}
+	
+	// TODO: can probably delete this method, not sure why i would delete the player
+	public static int deleteDetails(Player player) {
+		From f = new Delete().from(Player.class).where("Player=?", player.getId());
+		int numRows = f.count();
+		f.execute();
+		return numRows;
 	}
 	
 	public static int deleteRoster(String sport) {

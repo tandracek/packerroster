@@ -238,11 +238,10 @@ public class MainActivity extends Activity implements
 			if (result.size() > 0) {
 				helpText.setVisibility(View.GONE);
 				roster_adapter.addAll(result);
-				roster_adapter.notifyDataSetChanged();
 			} else {
 				helpText.setVisibility(View.VISIBLE);
-				roster_adapter.notifyDataSetChanged();
 			}
+			roster_adapter.notifyDataSetChanged();
 			setActionBarStyle();
 		}
 

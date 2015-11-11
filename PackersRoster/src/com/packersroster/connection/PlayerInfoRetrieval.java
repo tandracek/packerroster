@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import com.packersroster.player.DraftInfo;
 import com.packersroster.player.Player;
@@ -11,27 +12,27 @@ import com.packersroster.ui.SportStyles;
 
 public class PlayerInfoRetrieval extends WebSite {
 	String url;
-	SportStyles sport;
 	
 	public PlayerInfoRetrieval() {
-		super();
+		super(null);
 	}
 
 	public PlayerInfoRetrieval(SportStyles sport) {
-		super();
-		this.sport = sport;
+		super(sport);
 	}
 	
 	public Player getDetails(Player player, String playerUrl) {
 		SportStyles sp = SportStyles.sportFromString(player.sport);
 
+		this.connect(playerUrl);
 		switch(sp) {
 		case NFL:
 		case MLB:
-			this.connect(playerUrl);
 			this.getYahooDetails(player);
 			break;
 		case NBA:
+			this.getEspnDetails(player);
+			break;
 		}
 		return player;
 	}
@@ -70,6 +71,54 @@ public class PlayerInfoRetrieval extends WebSite {
 		else pick = temp.substring(1, 2);
 		
 		player.draftInfo = new DraftInfo(round, pick, team, year);
+		return player;
+	}
+	
+	public Player getEspnDetails(Player player) {
+		Element data = doc.getElementsByClass("player-bio").get(0);
+		Element genInfo = data.getElementsByClass("general-info").get(0);
+		Element heightWeight = genInfo.getElementsByTag("li").get(1);
+		
+		String heightWeightStr = null;
+		if (heightWeight != null) heightWeightStr = heightWeight.ownText();
+		String height, weight;
+		if (heightWeightStr != null) {
+			String[] hwArr = heightWeightStr.split(",");
+			if (hwArr.length > 1) {
+				height = hwArr[0];
+				weight = hwArr[1];
+				player.height = height;
+				player.weight = weight;
+			}
+		}
+		
+		Elements pGenLi = data.select(".player-metadata li");
+		String bornPlace, bornDate;
+		if (pGenLi.size() > 0) {
+			String bornInfo = pGenLi.get(0).ownText();
+			String[] bornInfoArr = bornInfo.split("in");
+			bornDate = bornInfoArr[0].trim();
+			bornPlace = bornInfoArr[1].split("(")[0].trim();
+			player.bornDate = bornDate;
+			player.bornPlace = bornPlace;
+			
+			String draftStr = pGenLi.get(1).ownText();
+			
+			String year, team, pick, round;
+			String[] yearSpl = draftStr.split(":");
+			year = yearSpl[0];
+			
+			String[] pickTeamSpl = yearSpl[1].split(",");
+			String[] pickSpl = pickTeamSpl[0].split(" ");
+			round = pickSpl[0];
+			
+			String[] teamSpl = pickTeamSpl[1].split(" ");
+			pick = teamSpl[0];
+			team = teamSpl[teamSpl.length];
+			
+			player.draftInfo = new DraftInfo(round, pick, team, year);
+		}
+		
 		return player;
 	}
 }

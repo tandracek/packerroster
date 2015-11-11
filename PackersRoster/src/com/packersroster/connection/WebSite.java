@@ -8,12 +8,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.packersroster.ui.SportStyles;
+
 
 public abstract class WebSite {
 	protected Document doc;
+	protected SportStyles sport;
 	
-	protected WebSite() {
-
+	protected WebSite(SportStyles sport) {
+		this.sport = sport;
 	}
 	
 	protected boolean connect(String Url) {

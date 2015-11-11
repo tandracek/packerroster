@@ -14,7 +14,7 @@ public class ESPNSite extends WebSite {
 	public ArrayList<Player> player_list;
 
 	public ESPNSite(String Url, String sport) {
-		super();
+		super(null);
 		player_list = new ArrayList<Player>();
 	}
 

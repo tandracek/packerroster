@@ -1,96 +1,142 @@
 package com.packersroster.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.packersroster.R;
 import com.packersroster.connection.SportDataUtils;
 import com.packersroster.player.DraftInfo;
 import com.packersroster.player.Player;
+import com.packersroster.player.Stats;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class PlayerDetails extends Activity {
-	private Player currPlayer;
-	private ActionBar aBar;
-	
+public class PlayerDetails extends Activity implements StatsListFragment.OnSeasonListClick {
+	public static final String DETAILS_FRAG = "detailsFragment";
+	public static final String LIST_FRAG = "sListFragment";
+
+	public Player player;
+	public List<Stats> statList;
+	public Context context;
+	public PlayerDetailsFragment playerDetailsFrag;
+	public StatsListFragment sListFrag;
+
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.details_layout);
-        
-        aBar = getActionBar();
-        aBar.setDisplayHomeAsUpEnabled(true);
-        
-        Intent intent = getIntent();
-        Long playerId = intent.getLongExtra(MainActivity.PLAYER_EXTRA, 0);
-        currPlayer = SportDataUtils.getPlayerById(playerId);
-        this.buildPlayerDetails();
-        
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.details_layout);
+		Intent intent = getIntent();
+		Long pId = intent.getLongExtra(MainActivity.PLAYER_EXTRA, -1);
+		if (pId > -1) {
+			player = SportDataUtils.getPlayerById(pId);
+	        statList = SportDataUtils.getStats(false, player);
+	        if(statList == null) {
+	        	statList = new ArrayList<Stats>();
+	        }
+			this.buildFragments();
+		}
+		context = this;
+		
         Button detailsBtn = (Button) findViewById(R.id.detailsBtn);
         detailsBtn.setOnClickListener(new View.OnClickListener(){
         	public void onClick(View v) {
-        		new GetDetails().execute(new String[] {currPlayer.link});
+        		new GetDetails().execute(new String[] {player.link});
         	}
         });
-    }
-	
-	private void buildDraftDetailsView(DraftInfo dInfo) {
-		if(dInfo == null) return;
-		
-		String dText;
-		if (dInfo.isUndrafted) {
-			dText = this.getResources().getString(R.string.undrafted);
-		}
-		else dText = "Round: " + dInfo.round + " Pick: " + dInfo.pick + " Year: " + dInfo.year + " by the " + dInfo.team;
-		this.buildTextView(R.id.draftInfoView, dText);
+        
+        Button statsBtn = (Button) findViewById(R.id.statsBtn);
+        statsBtn.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		new GetStats().execute(new String[] {}); 
+        	}
+        });
 	}
 
-	private void buildTextView(int viewId, String text) {
-		if (text == null) return;
-		TextView view = (TextView) findViewById(viewId);
-		view.setText(text);
+	private void buildFragments() {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		playerDetailsFrag = new PlayerDetailsFragment();
+		playerDetailsFrag.setPlayer(player);
+		ft.add(R.id.playerDetailsLayout, playerDetailsFrag, PlayerDetails.DETAILS_FRAG);
+		sListFrag = new StatsListFragment();
+		sListFrag.setStatList(statList);
+		sListFrag.setOnItemClickListener(this);
+		ft.add(R.id.seasonListLayout, sListFrag, PlayerDetails.LIST_FRAG);
+		ft.setTransition(FragmentTransaction.TRANSIT_NONE);
+		ft.commit();
+		
 	}
-	
-	private void buildPlayerDetails() {
-        this.buildTextView(R.id.nameView, currPlayer.name);
-        this.buildTextView(R.id.numberView, "   - #" + currPlayer.number);
-        this.buildTextView(R.id.posView, currPlayer.position);
-        this.buildTextView(R.id.ageViewText, currPlayer.age);
-        this.buildTextView(R.id.expViewText, currPlayer.experience);
-        this.buildTextView(R.id.collegeViewText, currPlayer.college);
-        this.buildTextView(R.id.salaryViewText, currPlayer.salary);
-        this.buildTextView(R.id.weightViewText, currPlayer.weight);
-        this.buildTextView(R.id.heightViewText, currPlayer.height);
-        this.buildTextView(R.id.bornDateViewText, currPlayer.bornDate);
-        this.buildTextView(R.id.bornPlaceViewText, currPlayer.bornPlace);
-        this.buildDraftDetailsView(currPlayer.draftInfo);
+
+	@Override
+	public void onClick(Stats stats) {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+		StatsFragment statsFrag = new StatsFragment();
+		statsFrag.setStats(stats);
+		ft.replace(R.id.playerDetailsLayout, statsFrag, PlayerDetails.DETAILS_FRAG);
+		ft.commit();
 	}
 	
 	private class GetDetails extends AsyncTask<String, String, Player> {
 
 		ProgressDialog pDialog;
 		protected void onPreExecute() {
-			pDialog = new ProgressDialog(PlayerDetails.this, ProgressDialog.STYLE_HORIZONTAL);
-			pDialog = ProgressDialog.show(PlayerDetails.this, "Getting Details", "Retrieving details...");		
+			pDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+			pDialog = ProgressDialog.show(context, "Getting Details", "Retrieving details...");		
 		}
 		
 		@Override
 		protected Player doInBackground(String... params) {
-			return SportDataUtils.getDetails(true, currPlayer);
+			return SportDataUtils.getDetails(true, player);
 		}
 		
 		@Override
 	    protected void onPostExecute(Player result) {
-			currPlayer = result;
-			buildPlayerDetails();
+			player = result;
+			playerDetailsFrag.refreshPlayerDetails(player);
 			pDialog.dismiss();
 	    }
 	}
 	
+	private class GetStats extends AsyncTask<String, String, List<Stats>> {
+
+		ProgressDialog pDialog;
+		protected void onPreExecute() {
+			pDialog = new ProgressDialog(context, ProgressDialog.STYLE_HORIZONTAL);
+			pDialog = ProgressDialog.show(context, "Getting Stats", "Retrieving stats...");		
+		}
+		
+		@Override
+		protected List<Stats> doInBackground(String... params) {
+			return SportDataUtils.getStats(true, player);
+		}
+		
+		@Override
+	    protected void onPostExecute(List<Stats> result) {
+			if (result == null) {
+				Log.e("PlayerDetails", "Stats is null");
+				pDialog.dismiss();
+				//throw error
+			} else {
+				statList = result;
+				sListFrag.refreshList(statList);
+				pDialog.dismiss();
+			}
+	    }
+	}
 }

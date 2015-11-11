@@ -25,7 +25,7 @@ public class YahooSite extends WebSite {
 	public ArrayList<Player> player_list;
 	
 	public YahooSite(String url, String sport) {
-		super();
+		super(null);
 		player_list = new ArrayList<Player>();
 	}
 	
@@ -131,7 +131,7 @@ public class YahooSite extends WebSite {
 			for(int j = (tr.size() - 2); j < (tr.size() - 1); j++) {
 				String cellClass;
 				Elements td = tr.get(j).getElementsByTag("td");
-				returnStats.add((T)getNflStats());
+				//returnStats.add((T)getNflStats());
 			}
 		}
 		
