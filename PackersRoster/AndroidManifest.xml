@@ -15,9 +15,11 @@
         android:theme="@style/AppTheme"
         android:name="com.activeandroid.app.Application" >
         <meta-data android:name="AA_DB_NAME" android:value="roster_db.db" />
-		<meta-data android:name="AA_DB_VERSION" android:value="4" />
+		<meta-data android:name="AA_DB_VERSION" android:value="7" />
+		<meta-data android:name="AA_MODELS"
+    			   android:value="com.example.packersroster.Player, com.example.packersroster.DraftInfo, com.example.packersroster.NflStats" />
         <activity
-            android:name="com.example.packersroster.MainActivity"
+            android:name="com.packersroster.activities.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
             <intent-filter>
@@ -27,17 +29,17 @@
             </intent-filter>
         </activity>
         <activity
-        	android:name="com.example.packersroster.PlayerDetails"
+        	android:name="com.packersroster.activities.PlayerDetails"
         	android:label="@string/roster_label"
-        	android:parentActivityName="com.example.packersroster.MainActivity" >
+        	android:parentActivityName="com.packersroster.activities.MainActivity" >
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.packersroster.MainActivity" />
     	</activity>
     	<activity
-        	android:name="com.example.packersroster.SettingsActivity"
+        	android:name="com.packersroster.activities.SettingsActivity"
         	android:label="@string/settings_title"
-        	android:parentActivityName="com.example.packersroster.MainActivity" >
+        	android:parentActivityName="com.packersroster.activities.MainActivity" >
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value="com.example.packersroster.MainActivity" />

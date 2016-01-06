@@ -6,13 +6,24 @@
     <string name="brewer_roster">Brewers</string>
     <string name="bucks_roster">Bucks</string>
     
+    <string name="age_label">Age: </string>
+    <string name="weight_label">Weight: </string>
+    <string name="height_label">Height: </string>
+    <string name="college_label">College: </string>
+    <string name="exp_label">Experience: </string>
+    <string name="salary_label">Salary: </string>
+    <string name="born_dt_label">Birth Date: </string>
+    <string name="born_place_label">Birth Place: </string>
+    <string name="season">Season: </string>
+    
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="roster_label">Roster</string>
     <string name="refresh_roster">Refresh</string>
     <string name="delete_roster">Delete</string>
     <string name="help_text">No data currently on the device.  Click on refresh in the menu.</string>
-	<string name="details_btn">Get details</string>
+	<string name="details_btn">Refresh details</string>
+	<string name="stats_btn">Refresh stats</string>
 	<string name="NFL">NFL</string>
 	<string name="MLB">MLB</string>
 	<string name="NBA">NBA</string>
