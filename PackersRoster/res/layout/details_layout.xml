@@ -6,27 +6,6 @@
     android:orientation="vertical"
     android:padding="5dp" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp" >
-
-        <Button
-            android:id="@+id/detailsBtn"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/details_btn" />
-
-        <Button
-            android:id="@+id/statsBtn"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/detailsBtn"
-            android:text="@string/stats_btn" />
-    </RelativeLayout>
-
     <FrameLayout
         android:id="@+id/playerDetailsLayout"
         android:layout_width="match_parent"

@@ -48,7 +48,6 @@ public class NflSite extends WebSite{
 	}
 
 	public <T extends Stats> ArrayList<T> getSeasonStats(String playerUrl) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

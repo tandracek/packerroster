@@ -40,9 +40,9 @@ import android.widget.Toast;
 public class MainActivity extends Activity implements
 		PopupMenu.OnMenuItemClickListener, PosSortDialog.PosSortInterface {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
-	public Context main_context;
-	public RosterAdapter roster_adapter;
-	public ListView roster_view;
+	public Context mainContext;
+	public RosterAdapter rosterAdapter;
+	public ListView rosterView;
 
 	public static String sport;
 	public static String sportPref;
@@ -58,7 +58,7 @@ public class MainActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		main_context = this;
+		mainContext = this;
 		setContentView(R.layout.activity_main);
 
 		aBar = getActionBar();
@@ -72,25 +72,25 @@ public class MainActivity extends Activity implements
 
 		List<Player> player_list = SportDataUtils.getRoster(false, MainActivity.activeSport);
 
-		roster_view = (ListView) findViewById(R.id.listView1);
-		roster_adapter = new RosterAdapter(this, R.layout.roster_list,
+		rosterView = (ListView) findViewById(R.id.listView1);
+		rosterAdapter = new RosterAdapter(this, R.layout.roster_list,
 				player_list, 2);
-		roster_view.setAdapter(roster_adapter);
+		rosterView.setAdapter(rosterAdapter);
 
 		helpText = (TextView) findViewById(R.id.blankText);
 		if (player_list.size() > 0) {
 			helpText.setVisibility(View.GONE);
 		}
 
-		roster_view
+		rosterView
 				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
-						Player player = roster_adapter.getItem(arg2);
+						Player player = rosterAdapter.getItem(arg2);
 
-						Intent mainIntent = new Intent(main_context,
+						Intent mainIntent = new Intent(mainContext,
 								PlayerDetails.class);
 						mainIntent.putExtra(PLAYER_EXTRA, player.getId());
 						startActivity(mainIntent);
@@ -115,13 +115,13 @@ public class MainActivity extends Activity implements
 	
 	public void onHeaderClick(View v) {
 		int index = ((ViewGroup) v.getParent()).indexOfChild(v);
-		roster_adapter.sortRoster(index, v.getId());
-		roster_adapter.notifyDataSetChanged();
+		rosterAdapter.sortRoster(index, v.getId());
+		rosterAdapter.notifyDataSetChanged();
 	}
 	
 	@Override
 	public void onPosClickListener(CharSequence position) {
-		roster_adapter.getFilter().filter(position);
+		rosterAdapter.getFilter().filter(position);
 	}
 
 	@Override
@@ -161,21 +161,21 @@ public class MainActivity extends Activity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.refresh_roster:
-			if (roster_adapter.getCount() > 0)
+			if (rosterAdapter.getCount() > 0)
 				SportDataUtils.deleteRoster(MainActivity.activeSport.sport);
 			new RosterDownload().execute();
 			return true;
 		case R.id.delete_roster:
 			int rows = SportDataUtils.deleteRoster(MainActivity.activeSport.sport);
-			roster_adapter.clear();
-			roster_adapter.notifyDataSetChanged();
+			rosterAdapter.clear();
+			rosterAdapter.notifyDataSetChanged();
 			helpText.setVisibility(View.VISIBLE);
-			Toast toast = Toast.makeText(main_context, "Deleted " + rows
+			Toast toast = Toast.makeText(mainContext, "Deleted " + rows
 					+ " rows", Toast.LENGTH_SHORT);
 			toast.show();
 			return true;
 		case R.id.settings_id:
-			startActivity(new Intent(main_context, SettingsActivity.class));
+			startActivity(new Intent(mainContext, SettingsActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -197,7 +197,7 @@ public class MainActivity extends Activity implements
 
 	public void SwitchSports() {
 		// TODO: check that they actually selected a new sport, also figure out if setting styles should be done here and not in async
-		roster_adapter.resetSort();
+		rosterAdapter.resetSort();
 		new RosterDownload().execute(new Boolean[] { false });
 	}
 	
@@ -234,14 +234,14 @@ public class MainActivity extends Activity implements
 		@Override
 		protected void onPostExecute(List<Player> result) {
 			pDialog.dismiss();
-			roster_adapter.clear();
+			rosterAdapter.clear();
 			if (result.size() > 0) {
 				helpText.setVisibility(View.GONE);
-				roster_adapter.addAll(result);
+				rosterAdapter.addAll(result);
 			} else {
 				helpText.setVisibility(View.VISIBLE);
 			}
-			roster_adapter.notifyDataSetChanged();
+			rosterAdapter.notifyDataSetChanged();
 			setActionBarStyle();
 		}
 

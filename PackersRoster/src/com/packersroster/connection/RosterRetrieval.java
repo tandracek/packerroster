@@ -50,7 +50,10 @@ public class RosterRetrieval extends WebSite {
 			tempPlayer.number = cells.get(0).ownText();
 			link = cells.get(1).getElementsByTag("a");
 			if (link.size() > 0) {
-				tempPlayer.link = link.get(0).attr("href");
+				String[] linkArr = link.get(0).attr("href").split("player/");
+				if (linkArr.length > 1) {
+					tempPlayer.link = linkArr[0] + "player/stats/" + linkArr[1];
+				}
 				tempPlayer.name = link.get(0).ownText();
 			}
 			tempPlayer.position = cells.get(2).ownText();

@@ -2,7 +2,10 @@ package com.packersroster.connection;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -21,10 +24,13 @@ public class PlayerInfoRetrieval extends WebSite {
 		super(sport);
 	}
 	
-	public Player getDetails(Player player, String playerUrl) {
+	public Player getDetails(Player player, String playerUrl, Document doc) {
 		SportStyles sp = SportStyles.sportFromString(player.sport);
-
-		this.connect(playerUrl);
+		if (doc != null) {
+			this.doc = doc;
+		} else {
+			this.connect(playerUrl);
+		}
 		switch(sp) {
 		case NFL:
 		case MLB:
@@ -93,28 +99,19 @@ public class PlayerInfoRetrieval extends WebSite {
 		}
 		
 		Elements pGenLi = data.select(".player-metadata li");
-		String bornPlace, bornDate;
 		if (pGenLi.size() > 0) {
 			String bornInfo = pGenLi.get(0).ownText();
-			String[] bornInfoArr = bornInfo.split("in");
-			bornDate = bornInfoArr[0].trim();
-			bornPlace = bornInfoArr[1].split("(")[0].trim();
-			player.bornDate = bornDate;
-			player.bornPlace = bornPlace;
-			
-			String draftStr = pGenLi.get(1).ownText();
+			Matcher bornMatch = Pattern.compile("(\\w\\w\\w\\s\\d,\\s\\d\\d\\d\\d)\\sin\\s(\\w*,\\s\\w\\w)").matcher(bornInfo);
+			player.bornDate = bornMatch.group(1);
+			player.bornPlace = bornMatch.group(2);
 			
 			String year, team, pick, round;
-			String[] yearSpl = draftStr.split(":");
-			year = yearSpl[0];
-			
-			String[] pickTeamSpl = yearSpl[1].split(",");
-			String[] pickSpl = pickTeamSpl[0].split(" ");
-			round = pickSpl[0];
-			
-			String[] teamSpl = pickTeamSpl[1].split(" ");
-			pick = teamSpl[0];
-			team = teamSpl[teamSpl.length];
+			String draftStr = pGenLi.get(1).ownText();
+			Matcher draftM = Pattern.compile("(\\d\\d\\d\\d):\\s(\\d).*,\\s(\\d+).*\\s.*\\s(\\w+)").matcher(draftStr);
+			year = draftM.group(1);
+			round = draftM.group(2);
+			pick = draftM.group(3);
+			team = draftM.group(4);
 			
 			player.draftInfo = new DraftInfo(round, pick, team, year);
 		}

@@ -17,6 +17,7 @@ import com.packersroster.ui.SportStyles;
 
 public class SportDataUtils {
 	public static final String TAG = "SportDataUtils";
+	public static WebSite currWebsite;
 
 	// TODO: fix sql errors inserting same players because of injury section
 	public static List<Player> getRoster(boolean goOnline, SportStyles sport) {
@@ -40,6 +41,7 @@ public class SportDataUtils {
 		return roster;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Player getPlayerById(Long playerId) {
 		return Model.load(Player.class, playerId);
 	}
@@ -65,19 +67,31 @@ public class SportDataUtils {
 		return pos;
 	}
 	
-	public static Player getDetails(boolean goOnline, Player player) {
+	public static Player getDetailsAndStats(boolean goOnline, Player player) {
+		player = SportDataUtils.getDetails(goOnline, player, null);
+		player.stats = SportDataUtils.getStats(goOnline, player, currWebsite);
+		currWebsite = null;
+		return player;
+	}
+	
+	public static Player getDetails(boolean goOnline, Player player, WebSite website) {
 		if(!goOnline) {
 			return new Select().from(Player.class).where("Player = ?", player.getId()).executeSingle();
 		}
 		PlayerInfoRetrieval pInfoRet = new PlayerInfoRetrieval();
-		player = pInfoRet.getDetails(player, player.link);
+		if (website != null) {
+			player = pInfoRet.getDetails(player, player.link, website.doc);
+		} else {
+			player = pInfoRet.getDetails(player, player.link, null);
+		}
+		
 		player.save();
-
+		currWebsite = pInfoRet;
 		return player;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List<Stats> getStats(boolean goOnline, Player player) {
+	public static List<Stats> getStats(boolean goOnline, Player player, WebSite website) {
 		SportStyles sport = SportStyles.sportFromString(player.sport);
 		Class<? extends Model> statClass = (Class<? extends Model>)sport.statClass;
 		if (statClass == null) {
@@ -92,7 +106,11 @@ public class SportDataUtils {
 		StatsRetrieval statsUtil = new StatsRetrieval(sport);
 		List<Stats> stats = null;
 		try {
-			stats = statsUtil.retrieveStats(player);
+			if (website != null) {
+				stats = statsUtil.retrieveStats(player, website.doc);
+			} else {
+				stats = statsUtil.retrieveStats(player, null);
+			}
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 			return null;
@@ -110,7 +128,7 @@ public class SportDataUtils {
 		} finally {
 			ActiveAndroid.endTransaction();
 		}
-		
+		currWebsite = statsUtil;
 		return stats;
 	}
 	

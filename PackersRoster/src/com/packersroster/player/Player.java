@@ -78,7 +78,7 @@ public class Player extends Model {
 		return c_number;
 	}
 	
-	//TODO: need to check what sport its in and return the proper stats obj
+	//TODO: need to check what sport its in and return the proper stats obj, not current used tho
 	@SuppressWarnings("unchecked")
 	public <T extends Stats> List<T> stats() {
 		return (List<T>) getMany(NflStats.class, "Stats");
