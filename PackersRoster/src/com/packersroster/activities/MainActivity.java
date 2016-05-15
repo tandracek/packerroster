@@ -24,6 +24,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,10 +36,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 // TODO: change to odd/even row styling
+// TODO: add ability to pull all players and their details in one go
 public class MainActivity extends Activity implements
 		PopupMenu.OnMenuItemClickListener, PosSortDialog.PosSortInterface {
 	public static final String PLAYER_EXTRA = "com.example.packersroster.MainActivity";
@@ -174,9 +180,15 @@ public class MainActivity extends Activity implements
 					+ " rows", Toast.LENGTH_SHORT);
 			toast.show();
 			return true;
-		case R.id.settings_id:
-			startActivity(new Intent(mainContext, SettingsActivity.class));
-			return true;
+		case R.id.get_all:
+			//if (rosterAdapter.getCount() > 0)
+			//	SportDataUtils.deleteRoster(MainActivity.activeSport.sport);
+			Log.d("MainActivity", "Clicked get all");
+			LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View popView = layoutInflater.inflate(R.layout.warning_popup, null);
+			PopupWindow window = new PopupWindow(popView, 200,
+					200);
+			window.showAtLocation(popView, Gravity.NO_GRAVITY, 10, 10);
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -196,9 +208,9 @@ public class MainActivity extends Activity implements
 	}
 
 	public void SwitchSports() {
-		// TODO: check that they actually selected a new sport, also figure out if setting styles should be done here and not in async
 		rosterAdapter.resetSort();
 		new RosterDownload().execute(new Boolean[] { false });
+		setActionBarStyle();
 	}
 	
 	public void setActionBarStyle() {
@@ -242,7 +254,6 @@ public class MainActivity extends Activity implements
 				helpText.setVisibility(View.VISIBLE);
 			}
 			rosterAdapter.notifyDataSetChanged();
-			setActionBarStyle();
 		}
 
 	}

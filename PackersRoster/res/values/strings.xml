@@ -16,11 +16,13 @@
     <string name="born_place_label">Birth Place: </string>
     <string name="season">Season: </string>
     
+    <string name="get_all_warning">This may take a few minutes, continue?</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="roster_label">Roster</string>
-    <string name="refresh_roster">Refresh</string>
-    <string name="delete_roster">Delete</string>
+    <string name="refresh_roster">Refresh Current Roster</string>
+    <string name="delete_roster">Delete Current Roster</string>
+    <string name="get_all">Get All Data for Team</string>
     <string name="help_text">No data currently on the device.  Click on refresh in the menu.</string>
 	<string name="details_btn">Refresh details</string>
 	<string name="stats_btn">Refresh stats</string>

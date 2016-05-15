@@ -2,6 +2,7 @@ package com.packersroster.activities;
 
 import java.util.List;
 
+import com.activeandroid.util.Log;
 import com.example.packersroster.R;
 import com.packersroster.player.Stats;
 
@@ -61,6 +62,10 @@ public class StatsListFragment extends ListFragment {
 	}
 	
 	public void refreshList(List<Stats> statList) {
+		if (statList == null) {
+			Log.e("StatListFragment", "Stat list is null");
+			return;
+		}
 		this.adapter.addAll(statList);
 		this.adapter.notifyDataSetChanged();
 	}

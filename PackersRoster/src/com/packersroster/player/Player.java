@@ -7,6 +7,7 @@ import java.util.List;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.*;
 import com.activeandroid.annotation.Column.ConflictAction;
+import com.activeandroid.annotation.Column.ForeignKeyAction;
 
 @Table(name="Player")
 public class Player extends Model {
@@ -43,7 +44,7 @@ public class Player extends Model {
 	public String college;
 	@Column(name="group_field")
 	public String group;
-	@Column(name="DraftInfo")
+	@Column(name="DraftInfo", onDelete = ForeignKeyAction.CASCADE)
 	public DraftInfo draftInfo;
 	
 	public List<Stats> stats;
@@ -78,7 +79,7 @@ public class Player extends Model {
 		return c_number;
 	}
 	
-	//TODO: need to check what sport its in and return the proper stats obj, not current used tho
+	//Below method not used
 	@SuppressWarnings("unchecked")
 	public <T extends Stats> List<T> stats() {
 		return (List<T>) getMany(NflStats.class, "Stats");

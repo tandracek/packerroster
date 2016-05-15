@@ -61,7 +61,7 @@ public class PlayerInfoRetrieval extends WebSite {
 			player.draftInfo = new DraftInfo(true);
 			return player;
 		}
-		
+		/*TODO fix bug where if there is no 'pick' number */
 		String[] draftArr = draft.split(" ");
 		String round = draftArr[1];
 		String year = draftArr[0];

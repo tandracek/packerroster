@@ -127,7 +127,6 @@ public class YahooSite extends WebSite {
 			String statGroup = table.attr("summary");
 			
 			Elements tr = table.get(0).getElementsByTag("tbody").get(0).getElementsByTag("tr");
-			//TODO: once this can be tested, can remove the limits so it can grab all seasons
 			for(int j = (tr.size() - 2); j < (tr.size() - 1); j++) {
 				String cellClass;
 				Elements td = tr.get(j).getElementsByTag("td");

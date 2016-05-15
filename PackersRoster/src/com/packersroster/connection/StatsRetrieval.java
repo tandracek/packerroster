@@ -13,6 +13,7 @@ import org.jsoup.select.Elements;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.packersroster.player.MlbStats;
 import com.packersroster.player.NbaStats;
 import com.packersroster.player.NflStats;
 import com.packersroster.player.Player;
@@ -23,6 +24,7 @@ import com.activeandroid.Model;
 public class StatsRetrieval extends WebSite {
 	private HashMap<String, String[]> nflYahooHtml;
 	private SparseArray<String[]> nbaEspnHtml;
+	private HashMap<String, String[]> mlbYahooHtml;
 	private HashMap<String, Stats> statsHash;
 
 	public StatsRetrieval(SportStyles sport) {
@@ -43,12 +45,13 @@ public class StatsRetrieval extends WebSite {
 			this.fillYahooStats(player, this.nflYahooHtml, NflStats.class);
 			break;
 		case MLB:
+			this.fillYahooStats(player, this.mlbYahooHtml, MlbStats.class);
 			break;
 		case NBA:
 			this.fillEspnStats(player, this.nbaEspnHtml, NbaStats.class);
 			break;
 		}
-		
+
 		return new ArrayList<Stats>(statsHash.values());
 	}
 	
@@ -83,6 +86,24 @@ public class StatsRetrieval extends WebSite {
 		nflYahooHtml.put("Rusing", nflRushTitleArr);
 		nflYahooHtml.put("Receiving", nflRecTitleArr);
 		nflYahooHtml.put("Defense", nflDefTitleArr);
+		
+		mlbYahooHtml = new HashMap<String, String[]>();
+		String[] mlbPitchingArr = new String[] { "Wins,wins", "Losses,losses", "Saves,saves", "Holds,holds", 
+				"Complete Games,completeGames", "Innings Pitched,inningsPitched", "Hits,hitsPitched","Runs,runsPitched",
+				"Home Runs,homeRunsPitched", "Bases on Balls,basesOnBalls","Strikeouts,strikeoutsPitched",
+				"Earned Run Average,era", "Walks plus Hits per Inning Pitched,whip","Batting Average Against,battingAvgAgainst"
+		};
+		String[] mlbBattingArr = new String[] { "At Bats,atBats", "Runs,runsBatted", "Hits,hitsBatted", "Doubles,doublesBatted", 
+				"Triples,triplesBatted", "Home Runs,homeRunsBatted", "Runs Batted In,rbis","Bases on Balls,bassesOnBallsBatted",
+				"Strikeouts,strikeoutsBatted", "Stolen Bases,stolenBases","Batting Average,battingAvg",
+				"On Base %,obp", "Slugging %,slugging","On Base Plus Slugging,ops"
+		};
+		String[] mlbFieldingArr = new String[] { "Putouts,putouts", "Total Chances,totalChances", "Assists,assists", "Errors,errors", 
+				"Double Plays,doublePlays", "Fielding %,fieldingPerct"
+		};
+		mlbYahooHtml.put("Pitching", mlbPitchingArr);
+		mlbYahooHtml.put("Batting", mlbBattingArr);
+		mlbYahooHtml.put("Fielding", mlbFieldingArr);
 	}
 
 	public <T extends Stats> void fillEspnStats(Player player,
@@ -194,7 +215,7 @@ public class StatsRetrieval extends WebSite {
 						String val = row
 								.getElementsByAttributeValue("title", item[0])
 								.get(0).ownText();
-						statsObj = setStatsField(s, val, statsObj);
+						statsObj = setStatsField(item[1], val, statsObj);
 					}
 					if (!statsHash.containsKey(season)) {
 						statsHash.put(season, statsObj);

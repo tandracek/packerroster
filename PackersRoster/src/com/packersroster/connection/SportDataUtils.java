@@ -9,6 +9,7 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
+import com.activeandroid.query.Join;
 import com.activeandroid.query.Select;
 import com.packersroster.player.DraftInfo;
 import com.packersroster.player.Player;
@@ -100,7 +101,7 @@ public class SportDataUtils {
 		}
 		
 		if (!goOnline) {
-			return new Select().from(statClass).where("Player = ?", player.getId()).execute();
+			return new Select().from(statClass).where("Player = ?", player.getId()).orderBy("season ASC").execute();
 		}
 		SportDataUtils.deleteStats(player);
 		StatsRetrieval statsUtil = new StatsRetrieval(sport);
@@ -118,17 +119,21 @@ public class SportDataUtils {
 			e.printStackTrace();
 			return null;
 		}
-		
+		boolean success = false;
 		ActiveAndroid.beginTransaction();
 		try {
 			for(Stats stat: stats) {
 				stat.save();
 			}
+			success = true;
 			ActiveAndroid.setTransactionSuccessful();
 		} finally {
 			ActiveAndroid.endTransaction();
 		}
 		currWebsite = statsUtil;
+		if (success) {
+			stats = SportDataUtils.getStats(false, player, website);
+		}
 		return stats;
 	}
 	
@@ -144,16 +149,10 @@ public class SportDataUtils {
 		return numRows;
 	}
 	
-	// TODO: can probably delete this method, not sure why i would delete the player
-	public static int deleteDetails(Player player) {
-		From f = new Delete().from(Player.class).where("Player=?", player.getId());
-		int numRows = f.count();
-		f.execute();
-		return numRows;
-	}
-	
+	@SuppressWarnings("unchecked")
 	public static int deleteRoster(String sport) {
 		From f = new Delete().from(Player.class).where("sport=?", sport);
+		Log.d("deleteRoster", f.toSql());
 		int numRows = f.count();
 		f.execute();
 		return numRows;

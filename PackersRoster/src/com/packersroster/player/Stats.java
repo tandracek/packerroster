@@ -11,9 +11,11 @@ import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Column.ConflictAction;
+import com.activeandroid.annotation.Column.ForeignKeyAction;
 
+//TODO: need to consider multiple positions in 1 season, add position to this and as a key
 public abstract class Stats extends Model {
-	@Column(name="Player", uniqueGroups = {"statsGroup"}, onUniqueConflicts = {ConflictAction.FAIL})
+	@Column(name="Player", uniqueGroups = {"statsGroup"}, onUniqueConflicts = {ConflictAction.FAIL}, onDelete = ForeignKeyAction.CASCADE)
 	public Player player;
 	@Column(uniqueGroups = {"statsGroup"}, onUniqueConflicts = {ConflictAction.FAIL})
 	public int season;
